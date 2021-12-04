@@ -22,3 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/authenticate', [AuthController::class, 'authenticate']);
 Route::post('/session', [AuthController::class, 'session']);
 Route::get('/login', [AuthController::class, 'login']);
+Route::get('/test', function () {
+    setcookie('name', 'jota');
+    return response()->json(['message' => 'success']);
+});
