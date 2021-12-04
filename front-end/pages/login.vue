@@ -18,6 +18,7 @@
     <div v-for="item in ary" :key="item.id">
       <div>{{ item }}</div>
     </div>
+    <button @click="axios_test">$axiosテスト</button>
   </div>
 </template>
 
@@ -156,7 +157,26 @@ export default {
       .catch(e => {
         console.log(e.response);
       });
+    },
+    async axios_test() {
+      console.log('axios_test');
+      console.log(this.$config.baseURL);
+      this.$axios.post('/api/session', {
+        user_id: 'haley.shakira',
+        password: 'password'
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(e => {
+        console.log(e.response);
+      });
+      // const res = await this.$axios.$get(this.url_test);
+      // console.log(res);
     }
+  },
+  mounted() {
+    this.$axios.get('/sanctum/csrf-cookie');
   }
 }
 </script>
