@@ -26,7 +26,7 @@ Route::get('/admin/user', function(Request $request) {
         return Auth::guard('admin')->user();
     }
     return response()->json(['message' => 'fail'], 400);
-});
+})->middleware('auth:admin');
 
 Route::post('/authenticate', [AuthController::class, 'authenticate']);
 Route::post('/session', [AuthController::class, 'session']);

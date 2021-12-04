@@ -25,7 +25,7 @@ class AuthController extends Controller
     public function session(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'user_id' => ['required'],
             'password' => ['required']
         ]);
         if(Auth::attempt($credentials)) {

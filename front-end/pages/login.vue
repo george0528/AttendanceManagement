@@ -49,7 +49,7 @@ export default {
       console.log('auth');
       axios.get(this.url_csrf, {withCredentials: true}).then(res => {
         axios.post(this.url, {
-            email: 'wcartwright@example.org',
+          user_id: 'haley.shakira',
           password: 'password'
         }, {withCredentials: true})
         .then(response => {
