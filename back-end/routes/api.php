@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\AdminAuthController;
+use App\Http\Controllers\Api\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -27,10 +27,6 @@ Route::get('/admin/user', function(Request $request) {
     }
     return response()->json(['message' => 'fail'], 400);
 })->middleware('auth:admin');
-
-Route::post('/authenticate', [AuthController::class, 'authenticate']);
-Route::post('/session', [AuthController::class, 'session']);
-Route::get('/login', [AuthController::class, 'login']);
 Route::get('/test', function () {
     setcookie('name', 'jota');
     return response()->json(['message' => 'success']);
@@ -38,4 +34,7 @@ Route::get('/test', function () {
 Route::get('/session/delete', function(Request $request) {
     $request->session()->flush();
 });
-Route::post('/admin/login', [AdminAuthController::class, 'authenticate']);
+
+// 真面目に
+Route::post('/user/login', [UserController::class, 'login']);
+Route::post('/admin/login', [AdminController::class, 'login']);

@@ -114,7 +114,7 @@ export default {
       console.log('admin');
       axios.get(this.url_csrf, {withCredentials: true}).then(res => {
         axios.post(this.url_admin, {
-          email: 'mschuster@example.org',
+          email: 'xruecker@example.com',
           password: 'password',
         },{withCredentials: true})
         .then(response => {
