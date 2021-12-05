@@ -12,6 +12,7 @@
     <div></div>
     <button @click="admin">adminテスト</button>
     <button @click="admin_no_csrf">admin No CSRFテスト</button>
+    <button @click="admin_validate">admin バリデーションの挙動チェック</button>
     <button @click="admin_user">admin ユーザー情報テスト</button>
     <div></div>
     <button @click="session_delete">セッションの情報削除</button>
@@ -123,6 +124,17 @@ export default {
         .catch(error => {
           console.log(error.response);
         });
+      });
+    },
+    admin_validate() {
+      this.$axios.post(this.url_admin, {
+        password : 'password',
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e.response);
       });
     },
     admin_no_csrf() {

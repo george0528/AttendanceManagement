@@ -35,6 +35,24 @@ Route::get('/session/delete', function(Request $request) {
     $request->session()->flush();
 });
 
-// 真面目に
-Route::post('/user/login', [UserController::class, 'login']);
-Route::post('/admin/login', [AdminController::class, 'login']);
+// user
+Route::prefix('/user')->group(function () {
+    Route::post('/login', [UserController::class, 'login']);
+    // user認証済み
+    Route::middleware(['auth'])->group(function () {
+        
+    });
+});
+
+// admin
+Route::prefix('/admin')->group(function() {
+    Route::post('/login', [AdminController::class, 'login']);
+    // 認証済みグループ
+    Route::middleware(['auth:admin'])->group(function () {
+        Route::get('/logout', [AdminController::class, 'logout']);
+        // user操作
+        Route::get('/user', [AdminController::class, 'getUser']);
+        Route::post('/user', [AdminController::class, 'addUser']);
+        Route::delete('/user', [AdminController::class, 'deleteUser']);
+    });
+});
