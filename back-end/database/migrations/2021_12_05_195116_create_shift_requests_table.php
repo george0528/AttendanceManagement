@@ -15,10 +15,12 @@ class CreateShiftRequestsTable extends Migration
     {
         Schema::create('shift_requests', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->bigInteger('user_id')->unsigned();
             $table->boolean('request_check')->default(false);
             $table->timestamp('created_at');
+
+            // 外部キー
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

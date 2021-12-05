@@ -15,8 +15,10 @@ class CreateNowsTable extends Migration
     {
         Schema::create('nows', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->bigInteger('user_id')->unsigned();
             $table->dateTime('start_time');
+
+            // 外部キー
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

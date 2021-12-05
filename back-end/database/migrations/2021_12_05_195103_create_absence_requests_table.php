@@ -15,9 +15,11 @@ class CreateAbsenceRequestsTable extends Migration
     {
         Schema::create('absence_requests', function (Blueprint $table) {
             $table->id();
-            $table->integer('schedule_id');
+            $table->bigInteger('schedule_id')->unsigned();
             $table->boolean('request_check')->default(false);
             $table->text('comment')->nullable();
+
+            // 外部キー
             $table->foreign('schedule_id')->references('id')->on('schedules');
         });
     }

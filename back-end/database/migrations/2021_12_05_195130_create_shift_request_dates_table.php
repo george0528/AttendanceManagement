@@ -15,9 +15,11 @@ class CreateShiftRequestDatesTable extends Migration
     {
         Schema::create('shift_request_dates', function (Blueprint $table) {
             $table->id();
-            $table->integer('request_id');
+            $table->bigInteger('request_id')->unsigned();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
+
+            // 外部キー
             $table->foreign('request_id')->references('id')->on('shift_requests');
         });
     }
