@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -14,11 +16,15 @@ class UserController extends Controller
 
   public function login(Request $request)
   {
-    $credentails = $request->validate([
+    $val = Validator::make($request->all(), [
       'login_id' => ['required'],
       'password' => ['required']
     ]);
+
+    if($val->fails()) {
+      return new JsonResponse('fail', 400);
+    }
     
-    return $this->service->login($credentails);
+    return $this->service->login($val->validated());
   }
 }

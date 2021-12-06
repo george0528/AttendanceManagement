@@ -1,6 +1,10 @@
 <?php
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/test', function(Request $request) {
+    $v = Validator::make($request->all(), [
+        'name' => ['required']
+    ]);
+    if($v->fails()) {
+        Log::alert("失敗");
+    }
+    return new JsonResponse(['message' => 'fails'], 400);
     return view('welcome');
 });

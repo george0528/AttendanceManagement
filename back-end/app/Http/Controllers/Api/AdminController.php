@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\AdminService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -16,13 +17,14 @@ class AdminController extends Controller
 	}
 	public function login(Request $request)
 	{
-		Log::alert("login controller");
-		$credentials = $request->validate([
+		$val = Validator::make($request->all(), [
 			'email' => ['required', 'email'],
 			'password' => ['required'],
 		]);
-		Log::alert("message");
-		return $this->service->login($credentials);
+		if($val->fails()) {
+			return response()->json(['message' => 'fail'], 400);
+		}
+		return $this->service->login($val->validated());
 	}
 	public function logout()
 	{
@@ -34,20 +36,28 @@ class AdminController extends Controller
 	}
 	public function addUser(Request $request)
 	{
-		$user_data = $request->validate([
+		$val = Validate::make($request->all(),[
 			'name' => ['required', 'string'],
 			'age' => ['requred', 'integer'],
 			'password' => ['between:6, 12'],
 		]);
 
-		return $this->service->addUser($user_data);
+		if($val->fails()) {
+			return response()->json(['message' => 'fail'], 400);
+		}
+
+		return $this->service->addUser($val->validated());
 	}
 	public function deleteUser(Request $request)
 	{
-		$user_id = $request->validate([
+		$val = Validator::make($request->all(), [
 			'user_id' => ['required', 'integer', 'exists:users'],
 		]);
 
-		return $this->service->deleteUser($user_id);
+		if($val->fails()) {
+			return response()->json(['message' => 'fail'], 400);
+		}
+
+		return $this->service->deleteUser($val->safe()->only('user_id')['user_id']);
 	}
 }
