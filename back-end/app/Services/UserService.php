@@ -16,9 +16,8 @@ class UserService
     if(Auth::attempt($credentails)) {
       session()->regenerate();
       return response()->json(['message' => 'success', 'name' => Auth::user()->name], 200);
-
-      return response()->json(['message' => 'fail'], 400);
     }
+    return response()->json(['message' => 'fail'], 400);
   }
   public function logout()
   {

@@ -21,7 +21,7 @@ class UserController extends Controller
   public function login(Request $request)
   {
     $val = Validator::make($request->all(), [
-      'login_id' => ['required'],
+      'login_id' => ['required', 'exists:users'],
       'password' => ['required']
     ]);
 
@@ -72,8 +72,9 @@ class UserController extends Controller
   }
   public function clockIn()
   {
-    $id = Auth::user()->id;
-    $is_attendance = Now::where('user_id', $id)->first();
+    $user = Auth::user();
+    $id = $user->id;
+    $is_attendance = $user->is_attendance();
     $time = new Carbon('now');
 
     if($is_attendance) {
@@ -84,8 +85,9 @@ class UserController extends Controller
   }
   public function clockOut()
   {
-    $id = Auth::user()->id;
-    $is_attendance = Now::where('user_id', $id)->first();
+    $user = Auth::user();
+    $id = $user->id;
+    $is_attendance = $user->is_attendance();
     $time = new Carbon('now');
 
     if($is_attendance) {

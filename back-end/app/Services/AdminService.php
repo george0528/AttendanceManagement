@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminService
 {
@@ -40,6 +41,7 @@ class AdminService
       $login_id = $user->loginIdGenerate();
       $data['login_id'] = $login_id;
       $data['password'] = Hash::make($data['password']);
+      $data['remember_token'] = Str::random(10);
       User::create($data);
       return response()->json($data, 200);
     } catch (\Exception $e) {

@@ -72,4 +72,14 @@ class User extends Authenticatable
     $id = $this->id;
     return History::where('user_id', $id)->get();
   }
+  public function is_attendance()
+  {
+    $id = $this->id;
+    $is_attendance = Now::where('user_id', $id)->first();
+    if($is_attendance) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

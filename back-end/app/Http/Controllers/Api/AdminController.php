@@ -70,6 +70,7 @@ class AdminController extends Controller
 			'age' => ['nullable', 'integer'],
 		]);
 
+
 		if($val->fails()) {
 			return response()->json(['message' => 'fail'], 400);
 		}
