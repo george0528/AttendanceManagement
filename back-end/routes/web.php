@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Validator;
 */
 
 Route::get('/', function () {
+    $user = User::find(1);
+    return $user->getSchedules();
     return view('welcome');
 });
 

@@ -52,7 +52,7 @@ class AdminService
       User::destroy($user_id);
       return response()->json(['message' => 'success'], 200);
     } catch (\Exception $e) {
-      return response()->json($e, 400);
+     return response()->json($e, 400);
     }
   }
   public function updateUser($data)

@@ -19,47 +19,50 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+  return $request->user();
 });
 
 Route::get('/admin/user', function(Request $request) {
-    if(Auth::guard('admin')->check()) {
-        return Auth::guard('admin')->user();
-    }
-    return response()->json(['message' => 'fail'], 400);
+  if(Auth::guard('admin')->check()) {
+    return Auth::guard('admin')->user();
+  }
+  return response()->json(['message' => 'fail'], 400);
 })->middleware('auth:admin');
 Route::get('/test', function () {
-    setcookie('name', 'jota');
-    return response()->json(['message' => 'success']);
+  setcookie('name', 'jota');
+  return response()->json(['message' => 'success']);
 });
 Route::get('/session/delete', function(Request $request) {
-    $request->session()->flush();
+  $request->session()->flush();
 });
 
 // user
 Route::prefix('/user')->group(function () {
-    Route::post('/login', [UserController::class, 'login']);
-    // user認証済み
-    Route::middleware(['auth'])->group(function () {
-        
-    });
+  Route::post('/login', [UserController::class, 'login']);
+  // user認証済み
+  Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/loout', [UserController::class, 'logout']);
+    Route::get('/schedulle', [UserController::class, 'getSchedule']);
+    Route::get('/history', [UserController::class, 'getHistory']);
+    Route::post('/absence', [UserController::class, 'addAbsence']);
+  });
 });
 
 // admin
 Route::prefix('/admin')->group(function() {
-    Route::post('/login', [AdminController::class, 'login']);
-    // 認証済みグループ
-    Route::middleware(['auth:admin'])->group(function () {
-        Route::get('/logout', [AdminController::class, 'logout']);
-        // user操作
-        Route::get('/user', [AdminController::class, 'getUser']);
-        Route::post('/user', [AdminController::class, 'addUser']);
-        Route::patch('/user', [AdminController::class, 'updateUser']);
-        Route::delete('/user', [AdminController::class, 'deleteUser']);
-    });
+  Route::post('/login', [AdminController::class, 'login']);
+  // 認証済みグループ
+  Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/logout', [AdminController::class, 'logout']);
+    // user操作
+    Route::get('/user', [AdminController::class, 'getUser']);
+    Route::post('/user', [AdminController::class, 'addUser']);
+    Route::patch('/user', [AdminController::class, 'updateUser']);
+    Route::delete('/user', [AdminController::class, 'deleteUser']);
+  });
 });
 
 // 認証済みアカウント
 Route::middleware(['auth:sanctum,admin'])->group(function () {
-    Route::get('schedule', [AuthenticatedController::class, 'getSchedule']);
+  Route::get('schedule', [AuthenticatedController::class, 'getSchedule']);
 });

@@ -17,4 +17,8 @@ class AuthenticatedController extends Controller
   {
     return $this->service->getSchedule();
   }
+  public function getHistory()
+  {
+    return $this->service->getHistory();
+  }
 }
