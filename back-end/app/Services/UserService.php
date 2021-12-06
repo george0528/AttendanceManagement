@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\AbsenceRequest;
+use App\Models\History;
+use App\Models\Now;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserService
 {
@@ -36,6 +39,30 @@ class UserService
       return new JsonResponse($res, 200);
     } catch (\Exception $e) {
       return new JsonResponse($e, 400);
+    }
+  }
+  public function clockIn($data)
+  {
+    try {
+      $res = Now::create($data);
+      return response()->json($res, 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
+  public function clockOut($data)
+  {
+    DB::beginTransaction();
+    try {
+      $now = Now::where('user_id', $data['user_id'])->first();
+      $data['start_time'] = $now->start_time;
+      $res = History::create($data);
+      $now->delete();
+      DB::commit();
+      return response()->json($res, 200);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return response()->json($e, 400);
     }
   }
 }

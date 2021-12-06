@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Validator;
 
 Route::get('/', function () {
     $user = User::find(1);
+    $time = new Carbon('now');
+    return $time;
     return $user->getSchedules();
     return view('welcome');
 });
