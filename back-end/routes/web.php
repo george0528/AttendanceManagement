@@ -26,8 +26,9 @@ Route::get('/test', function(Request $request) {
         'name' => ['required']
     ]);
     if($v->fails()) {
-        Log::alert("失敗");
+        info('info', [$v]);
     }
+    info($v->validated());
     return new JsonResponse(['message' => 'fails'], 400);
     return view('welcome');
 });
