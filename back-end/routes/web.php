@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -31,4 +32,12 @@ Route::get('/test', function(Request $request) {
     info($v->validated());
     return new JsonResponse(['message' => 'fails'], 400);
     return view('welcome');
+});
+
+Route::get('/fill', function(User $user) {
+    $user = $user::first();
+    $user->fill(['age' => 100]);
+    $user->save();
+    info('user', [$user]);
+    return $user;
 });

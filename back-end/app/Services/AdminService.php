@@ -41,7 +41,7 @@ class AdminService
       $data['login_id'] = $login_id;
       $data['password'] = Hash::make($data['password']);
       User::create($data);
-      return response()->json([$data], 200);
+      return response()->json($data, 200);
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }
@@ -51,6 +51,17 @@ class AdminService
     try {
       User::destroy($user_id);
       return response()->json(['message' => 'success'], 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
+  public function updateUser($data)
+  {
+    try {
+      $user = User::find($data['user_id']);
+      unset($data['user_id']);
+      $user->fill($data)->save();
+      return response()->json($user, 200);
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }

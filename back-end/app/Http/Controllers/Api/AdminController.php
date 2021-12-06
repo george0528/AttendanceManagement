@@ -51,7 +51,7 @@ class AdminController extends Controller
 	public function deleteUser(Request $request)
 	{
 		$val = Validator::make($request->all(), [
-			'user_id' => ['required', 'integer', 'exists:users'],
+			'user_id' => ['required', 'integer', 'exists:users,id'],
 		]);
 
 		if($val->fails()) {
@@ -59,5 +59,23 @@ class AdminController extends Controller
 		}
 
 		return $this->service->deleteUser($val->safe()->only('user_id')['user_id']);
+	}
+	public function updateUser(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'user_id' => ['required', 'integer', 'exists:users,id'],
+			'login_id' => ['nullable', 'string', 'min:6', 'unique:users,login_id'],
+			'password' => ['nullable', 'string', 'between:6, 12'],
+			'name' => ['nullable', 'string'],
+			'age' => ['nullable', 'integer'],
+		]);
+
+		if($val->fails()) {
+			return response()->json(['message' => 'fail'], 400);
+		}
+
+		// 空文字,null,0削除
+		$val = array_filter($val->validated());
+		return $this->service->updateUser($val);
 	}
 }

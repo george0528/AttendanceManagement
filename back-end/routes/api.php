@@ -53,6 +53,7 @@ Route::prefix('/admin')->group(function() {
         // user操作
         Route::get('/user', [AdminController::class, 'getUser']);
         Route::post('/user', [AdminController::class, 'addUser']);
+        Route::patch('/user', [AdminController::class, 'updateUser']);
         Route::delete('/user', [AdminController::class, 'deleteUser']);
     });
 });
