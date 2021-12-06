@@ -22,7 +22,7 @@ class AdminController extends Controller
 			'password' => ['required'],
 		]);
 		if($val->fails()) {
-			return response()->json(['message' => 'fail'], 400);
+			return response()->json(['message' => 'val fail'], 400);
 		}
 		return $this->service->login($val->validated());
 	}
@@ -76,6 +76,7 @@ class AdminController extends Controller
 
 		// 空文字,null,0削除
 		$val = array_filter($val->validated());
+		
 		return $this->service->updateUser($val);
 	}
 }

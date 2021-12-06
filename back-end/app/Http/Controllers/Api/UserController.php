@@ -22,7 +22,7 @@ class UserController extends Controller
     ]);
 
     if($val->fails()) {
-      return new JsonResponse('fail', 400);
+      return new JsonResponse('fail val', 400);
     }
     
     return $this->service->login($val->validated());

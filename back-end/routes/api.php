@@ -57,3 +57,10 @@ Route::prefix('/admin')->group(function() {
         Route::delete('/user', [AdminController::class, 'deleteUser']);
     });
 });
+
+// 認証済みアカウント
+Route::middleware(['auth:sanctum,admin'])->group(function () {
+    Route::get('/auth', function() {
+        return response()->json('logined', 200);
+    });
+});

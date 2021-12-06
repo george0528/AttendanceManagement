@@ -16,6 +16,8 @@
     <button @click="admin_user">admin ユーザー情報テスト</button>
     <div></div>
     <button @click="session_delete">セッションの情報削除</button>
+    <div></div>
+    <button @click="test">一時的なテスト</button>
     <div v-for="item in ary" :key="item.id">
       <div>{{ item }}</div>
     </div>
@@ -50,8 +52,8 @@ export default {
     api() {
       console.log('auth');
       axios.get(this.url_csrf, {withCredentials: true}).then(res => {
-        axios.post(this.url, {
-          user_id: 'haley.shakira',
+        this.$axios.post('/api/user/login', {
+          login_id: 'balistreri.ayla',
           password: 'password'
         }, {withCredentials: true})
         .then(response => {
@@ -152,7 +154,7 @@ export default {
     },
     admin_user() {
       console.log('admin_user');
-      axios.get(this.url_admin_user, {withCredentials: true})
+      this.$axios.get('/api/admin/user', {withCredentials: true})
       .then(res => {
         console.log(res);
       })
@@ -170,11 +172,11 @@ export default {
         console.log(e.response);
       });
     },
-    async axios_test() {
+    axios_test() {
       console.log('axios_test');
       console.log(this.$config.baseURL);
-      this.$axios.post('/api/session', {
-        user_id: 'haley.shakira',
+      this.$axios.post('/api/admin/login', {
+        email: 'wilderman.carlotta@example.net',
         password: 'password'
       })
       .then(response => {
@@ -185,6 +187,16 @@ export default {
       });
       // const res = await this.$axios.$get(this.url_test);
       // console.log(res);
+    },
+    test() {
+      console.log('test');
+      this.$axios.get('/api/auth')
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e.response);
+      });
     }
   },
   mounted() {
