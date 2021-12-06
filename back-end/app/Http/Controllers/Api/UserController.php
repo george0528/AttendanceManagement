@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+  private $service;
   public function __construct(UserService $service) {
     $this->service = $service;
   }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\AuthenticatedController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -60,7 +61,5 @@ Route::prefix('/admin')->group(function() {
 
 // 認証済みアカウント
 Route::middleware(['auth:sanctum,admin'])->group(function () {
-    Route::get('/auth', function() {
-        return response()->json('logined', 200);
-    });
+    Route::get('schedule', [AuthenticatedController::class, 'getSchedule']);
 });
