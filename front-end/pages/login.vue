@@ -4,6 +4,7 @@
       <button type='submit' @click="submit">axiosテスト</button>
     </form>
     <button @click="api">認証テスト</button>
+    <button @click="api_logout">ログアウト</button>
     <button @click="api_no_csrf">認証テスト No csrf</button>
     <button @click="user">ユーザー情報テスト</button>
     <div></div>
@@ -53,7 +54,7 @@ export default {
       console.log('auth');
       axios.get(this.url_csrf, {withCredentials: true}).then(res => {
         this.$axios.post('/api/user/login', {
-          login_id: 'balistreri.ayla',
+          login_id: 'klocko.jewel',
           password: 'password'
         }, {withCredentials: true})
         .then(response => {
@@ -62,6 +63,15 @@ export default {
         .catch(error => {
           console.log(error);
         });
+      });
+    },
+    api_logout() {
+      this.$axios.post('/api/user/logout')
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e.response);
       });
     },
     api_no_csrf() {

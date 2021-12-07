@@ -38,10 +38,10 @@ Route::get('/session/delete', function(Request $request) {
 
 // user
 Route::prefix('/user')->group(function () {
-  Route::post('/login', [UserController::class, 'login']);
+  Route::post('/login', [UserController::class, 'login'])->name('login');
   // user認証済み
   Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/loout', [UserController::class, 'logout']);
+    Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/schedulle', [UserController::class, 'getSchedule']);
     Route::get('/history', [UserController::class, 'getHistory']);
     Route::post('/absence', [UserController::class, 'addAbsence']);

@@ -18,6 +18,7 @@ class UserController extends Controller
     $this->service = $service;
   }
 
+  // ログイン
   public function login(Request $request)
   {
     $val = Validator::make($request->all(), [
@@ -31,10 +32,14 @@ class UserController extends Controller
     
     return $this->service->login($val->validated());
   }
+
+  // ログアウト
   public function logout()
   {
     return $this->service->logout();
   }
+
+  // シフトスケジュール確認
   public function getSchedule()
   {
     if(Auth::check()) {
@@ -45,6 +50,8 @@ class UserController extends Controller
 
     return response()->json('fail', 400);
   }
+
+  // 就業履歴
   public function getHistory()
   {
     if(Auth::check()) {
@@ -55,6 +62,8 @@ class UserController extends Controller
 
     return response()->json('fail', 400);
   }
+
+  // 欠勤申請
   public function addAbsence(Request $request)
   {
     $val = Validator::make($request->all(), [
@@ -70,6 +79,8 @@ class UserController extends Controller
 
     return $this->service->addAbsence($val);
   }
+
+  // 出勤処理
   public function clockIn()
   {
     $user = Auth::user();
@@ -83,6 +94,8 @@ class UserController extends Controller
 
     return $this->service->clockIn(['user_id' => $id, 'start_time' => $time]);
   }
+
+  // 退勤処理
   public function clockOut()
   {
     $user = Auth::user();

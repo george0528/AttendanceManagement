@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserService
 {
+
+  // ログイン処理
   public function login($credentails)
   {
     if(Auth::attempt($credentails)) {
@@ -19,10 +21,12 @@ class UserService
     }
     return response()->json(['message' => 'fail'], 400);
   }
+
+  // ログアウト処理
   public function logout()
   {
     if(Auth::check()) {
-      Auth::logout();
+      Auth::guard('web')->logout();
       session()->invalidate();
       session()->regenerateToken();
       return response()->json(['message' => 'success'], 200);
@@ -30,6 +34,8 @@ class UserService
 
     return response()->json(['message' => 'fail'], 400); 
   }
+
+  // 欠勤申請処理
   public function addAbsence($data)
   {
     try {
@@ -40,6 +46,8 @@ class UserService
       return new JsonResponse($e, 400);
     }
   }
+
+  // 出勤処理
   public function clockIn($data)
   {
     try {
@@ -49,6 +57,8 @@ class UserService
       return response()->json($e, 400);
     }
   }
+
+  // 退勤処理
   public function clockOut($data)
   {
     DB::beginTransaction();

@@ -46,3 +46,4 @@ Route::get('/fill', function(User $user) {
     info('user', [$user]);
     return $user;
 });
+
