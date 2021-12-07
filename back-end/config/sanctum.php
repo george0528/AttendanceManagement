@@ -32,7 +32,7 @@ return [
     */
 
     // 'guard' => ['web', 'api', 'admin'],
-    'guard' => ['web'],
+    'guard' => ['user'],
 
     // csrf保護の有無
     // 'routes' => true,

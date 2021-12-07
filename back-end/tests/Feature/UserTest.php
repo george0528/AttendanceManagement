@@ -28,15 +28,7 @@ class UserTest extends TestCase
    */
   public function test_login_success()
   {
-    $user = new User;
-    $data = [
-      'name' => $this->faker->name(),
-      'login_id' => $user->loginIdGenerate(),
-      'age' => 20,
-      'password' => 'password',
-    ];
-
-    $this->assertGuest();
+    $this->assertGuest('user');
 
     $this->url = $this->url.'/login';
     $response = $this->post($this->url, [
@@ -44,12 +36,12 @@ class UserTest extends TestCase
       'password' => 'password',
     ]);
     $response->assertStatus(200);
-    $this->assertAuthenticated('web');
+    $this->assertAuthenticated('user');
   }
 
   public function test_login_failed()
   {
-    $this->assertGuest();
+    $this->assertGuest('user');
 
     $this->url = $this->url.'/login';
     
@@ -85,20 +77,19 @@ class UserTest extends TestCase
   {
     $this->url = $this->url.'/logout';
 
-    $this->assertGuest('web');
+    $this->assertGuest('user');
     Auth::login($this->user);
-    $this->assertAuthenticatedAs($this->user);
+    $this->assertAuthenticatedAs($this->user, 'user');
     $response = $this->postJson($this->url);
     $response->assertOk();
-    $this->assertAuthenticatedAs($this->user); // passする
-    $this->assertGuest('web');
+    $this->assertGuest('user');
   }
 
   public function test_logout_failed()
   {
     $this->url = $this->url.'/logout';
 
-    $this->assertGuest('web');
+    $this->assertGuest('user');
     $response = $this->postJson($this->url);
     $response->assertStatus(401);
     $response->assertJsonFragment(['Unauthenticated']);
@@ -108,14 +99,13 @@ class UserTest extends TestCase
   {
     $this->url = $this->url.'/logout';
     
-    $this->assertGuest('web');
+    $this->assertGuest('user');
     $response = $this->actingAs($this->user)->postJson($this->url);
     $response->assertOk();
-    $user = Auth::guard('web')->check();
+    $user = Auth::guard('user')->check();
     $admin = Auth::guard('admin')->check();
     info('user', [$user]);
     info('admin', [$admin]);
-    $this->assertAuthenticated('web');
-    $this->assertGuest();
+    $this->assertGuest('user');
   }
 }

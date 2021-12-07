@@ -26,7 +26,7 @@ class UserService
   public function logout()
   {
     if(Auth::check()) {
-      Auth::guard('web')->logout();
+      Auth::guard('user')->logout();
       session()->invalidate();
       session()->regenerateToken();
       return response()->json(['message' => 'success'], 200);
