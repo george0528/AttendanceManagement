@@ -19,18 +19,13 @@ class UserTest extends TestCase
 {
   use DatabaseTransactions, WithFaker;
 
-  // setup
+  // セットアップ
   public function setUp(): void
   {
     parent::setUp();
     $this->user = User::factory()->create();
     $this->url = '/api/user';
   }
-  /**
-   * A basic feature test example.
-   *
-   * @return void
-   */
 
   // ログイン
   public function test_login_success()
