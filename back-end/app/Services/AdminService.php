@@ -68,4 +68,41 @@ class AdminService
       return response()->json($e, 400);
     }
   }
+
+  // 論理削除したuserの取得
+  public function getDeleteUser()
+  {
+    $users = User::onlyTrashed()->get();
+    return response()->json($users, 200);
+  }
+
+  // 論理削除したuserを戻す
+  public function restoreDeleteUser($user_id)
+  {
+    try {
+      $user = User::onlyTrashed()->find($user_id);
+      $res = $user->restore();
+      if(!$res) {
+        throw new Exception("戻す事が出来ませんでした", 1);
+      }
+      return response()->json('success', 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
+
+  // 論理削除したuserを物理削除する
+  public function forceDeleteUser($user_id)
+  {
+    try {
+      $user = User::onlyTrashed()->find($user_id);
+      $res = $user->forceDelete();
+      if(!$res) {
+        throw new Exception("完全に削除する事が出来ませんでした", 1);
+      }
+      return response()->json('success', 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
 }

@@ -81,4 +81,38 @@ class AdminController extends Controller
 		
 		return $this->service->updateUser($val);
 	}
+
+	// 論理削除のuserを取得
+	public function getDeleteUser()
+	{
+		return $this->service->getDeleteUser();
+	}
+
+	// 論理削除のuserを戻す
+	public function restoreDeleteUser(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'user_id' => ['required', Rule::exists('users', 'id')->whereNotNull('deleted_at')],
+		]);
+
+		if($val->fails()) {
+			return response()->json('fail', 400);
+		}
+
+		return $this->service->restoreDeleteUser($val->validated()['user_id']);
+	}
+
+	// 論理削除のuserを物理削除する
+	public function forceDeleteUser(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'user_id' => ['required', Rule::exists('users', 'id')->whereNotNull('deleted_at')],
+		]);
+
+		if($val->fails()) {
+			return response()->json('fail', 400);
+		}
+
+		return $this->service->forceDeleteUser($val->validated()['user_id']);
+	}
 }

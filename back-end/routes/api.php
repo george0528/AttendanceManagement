@@ -56,11 +56,17 @@ Route::prefix('/admin')->group(function() {
   // 認証済みグループ
   Route::middleware(['auth:admin'])->group(function () {
     Route::post('/logout', [AdminController::class, 'logout']);
-    // user操作
-    Route::get('/user', [AdminController::class, 'getUser']);
-    Route::post('/user', [AdminController::class, 'addUser']);
-    Route::put('/user', [AdminController::class, 'updateUser']);
-    Route::delete('/user', [AdminController::class, 'deleteUser']);
+    // user
+    Route::prefix('/user')->group(function () {
+      Route::get('/', [AdminController::class, 'getUser']);
+      Route::post('/', [AdminController::class, 'addUser']);
+      Route::put('/', [AdminController::class, 'updateUser']);
+      Route::delete('/', [AdminController::class, 'deleteUser']);
+      Route::get('/delete', [AdminController::class, 'getDeleteUser']);
+      Route::post('/delete', [AdminController::class, 'deleteUser']);
+      Route::put('/delete', [AdminController::class, 'restoreDeleteUser']);
+      Route::delete('/delete', [AdminController::class, 'forceDeleteUser']);
+    });
   });
 });
 

@@ -49,7 +49,7 @@ class User extends Authenticatable
     $login_id = '';
     while($loop_flag) {
       $login_id = Str::random(8);
-      $already_login_id =  $this->where('login_id', $login_id)->first();
+      $already_login_id =  $this->withTrashed()->where('login_id', $login_id)->first();
       if(!$already_login_id) {
         $loop_flag = false;
         return $login_id;
