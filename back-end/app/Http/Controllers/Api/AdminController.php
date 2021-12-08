@@ -88,7 +88,7 @@ class AdminController extends Controller
 		return $this->service->getDeleteUser();
 	}
 
-	// 論理削除のuserを戻す
+	// 論理削除のuserを復元
 	public function restoreDeleteUser(Request $request)
 	{
 		$val = Validator::make($request->all(), [

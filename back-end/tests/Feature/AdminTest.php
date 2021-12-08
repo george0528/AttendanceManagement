@@ -155,4 +155,42 @@ class AdminTest extends TestCase
 
     $this->assertEquals(User::count(), $user_count);
   }
+
+  // 論理削除のuserを取得
+  public function test_user_softdelete_get()
+  {
+    $this->url = $this->url.'/user/delete';
+    
+    $user = User::factory()->create();
+    $user->delete();
+
+    $delete_user_count = User::onlyTrashed()->count();
+
+    $res = $this->actingAs($this->admin, 'admin')->getJson($this->url);
+    $res->assertOk();
+
+    $json = $res->decodeResponseJson();
+    $this->assertEquals($delete_user_count, count($json));
+  }
+
+  // 論理削除のデータを復元
+  public function test_user_softdelete_put()
+  {
+    $this->url = $this->url.'/user/delete';
+
+    $user = User::factory()->create();
+    $user->delete();
+
+    $user_count = User::count();
+    $user_count++;
+
+    $delete_user_count = User::onlyTrashed()->count();
+    $delete_user_count--;
+
+    $res = $this->actingAs($this->admin, 'admin')->putJson($this->url, ['user_id' => $user->id]);
+    $res->assertOk();
+
+    $this->assertEquals($user_count, User::count());
+    $this->assertEquals($delete_user_count, User::onlyTrashed()->count());
+  }
 }

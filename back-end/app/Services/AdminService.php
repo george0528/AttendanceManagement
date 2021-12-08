@@ -76,7 +76,7 @@ class AdminService
     return response()->json($users, 200);
   }
 
-  // 論理削除したuserを戻す
+  // 論理削除したuserを復元
   public function restoreDeleteUser($user_id)
   {
     try {
