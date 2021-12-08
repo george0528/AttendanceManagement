@@ -19,6 +19,7 @@ class CreateAbsenceRequestsTable extends Migration
             $table->boolean('request_check')->default(false);
             $table->text('comment')->nullable();
 
+            $table->softDeletes();
             // 外部キー
             $table->foreign('schedule_id')->references('id')->on('schedules');
         });

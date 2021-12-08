@@ -19,6 +19,7 @@ class CreateSchedulesTable extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
 
+            $table->softDeletes();
             // 外部キー
             $table->foreign('user_id')->references('id')->on('users');
         });

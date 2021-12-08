@@ -19,6 +19,7 @@ class CreateShiftRequestDatesTable extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
 
+            $table->softDeletes();
             // 外部キー
             $table->foreign('request_id')->references('id')->on('shift_requests');
         });

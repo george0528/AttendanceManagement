@@ -19,6 +19,7 @@ class CreateShiftRequestsTable extends Migration
             $table->boolean('request_check')->default(false);
             $table->timestamp('created_at');
 
+            $table->softDeletes();
             // 外部キー
             $table->foreign('user_id')->references('id')->on('users');
         });

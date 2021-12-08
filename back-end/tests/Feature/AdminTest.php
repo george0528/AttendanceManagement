@@ -117,4 +117,31 @@ class AdminTest extends TestCase
     $res->assertOk();
     $this->assertDatabaseCount('users', $user_count);
   }
+
+  // user編集
+  public function test_user_update()
+  {
+    $this->url = $this->url.'/user';
+
+    $user_count = User::count();
+    $user_count++;
+
+    $user = User::factory()->create();
+    $data = [
+      'user_id' => $user->id,
+      'name' => 'testuser',
+    ];
+
+    $res = $this->actingAs($this->admin, 'admin')->patchJson($this->url, $data);
+    $res->assertOk();
+    
+    $data['id'] = $data['user_id'];
+    unset($data['user_id']);
+    $res->assertJsonFragment($data);
+  }
+
+  public function test_user_delete()
+  {
+    // 
+  }
 }

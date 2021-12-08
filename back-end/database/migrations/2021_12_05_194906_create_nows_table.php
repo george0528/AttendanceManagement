@@ -18,6 +18,7 @@ class CreateNowsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->dateTime('start_time');
 
+            $table->softDeletes();
             // 外部キー
             $table->foreign('user_id')->references('id')->on('users');
         });
