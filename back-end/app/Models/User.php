@@ -67,7 +67,7 @@ class User extends Authenticatable
   {
     return $this->hasMany(History::class);
   }
-  public function getHitories()
+  public function getHistories()
   {
     $id = $this->id;
     return History::where('user_id', $id)->get();

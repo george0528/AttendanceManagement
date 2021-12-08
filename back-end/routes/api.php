@@ -42,7 +42,7 @@ Route::prefix('/user')->group(function () {
   // user認証済み
   Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
-    Route::get('/schedulle', [UserController::class, 'getSchedule']);
+    Route::get('/schedule', [UserController::class, 'getSchedule']);
     Route::get('/history', [UserController::class, 'getHistory']);
     Route::post('/absence', [UserController::class, 'addAbsence']);
     Route::post('/clockin', [UserController::class, 'clockIn']);

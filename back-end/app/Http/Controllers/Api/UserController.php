@@ -9,6 +9,7 @@ use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -107,6 +108,6 @@ class UserController extends Controller
       return $this->service->clockOut(['user_id' => $id, 'end_time' => $time]);
     }
 
-    return response()->json('出勤していません', 400);
+    return response()->json('まだ出勤していません', 400);
   }
 }
