@@ -115,16 +115,13 @@ class AdminTest extends TestCase
     ];
     $res = $this->actingAs($this->admin, 'admin')->postJson($this->url, $data);
     $res->assertOk();
-    $this->assertDatabaseCount('users', $user_count);
+    $this->assertEquals(User::count(), $user_count);
   }
 
   // user編集
-  public function test_user_update()
+  public function test_user_update_success()
   {
     $this->url = $this->url.'/user';
-
-    $user_count = User::count();
-    $user_count++;
 
     $user = User::factory()->create();
     $data = [
@@ -132,7 +129,7 @@ class AdminTest extends TestCase
       'name' => 'testuser',
     ];
 
-    $res = $this->actingAs($this->admin, 'admin')->patchJson($this->url, $data);
+    $res = $this->actingAs($this->admin, 'admin')->putJson($this->url, $data);
     $res->assertOk();
     
     $data['id'] = $data['user_id'];
@@ -140,8 +137,22 @@ class AdminTest extends TestCase
     $res->assertJsonFragment($data);
   }
 
+  // user削除
   public function test_user_delete()
   {
-    // 
+    $this->url = $this->url.'/user';
+
+    $user = User::factory()->create();
+
+    $user_count = User::count();
+    $user_count--;
+
+    $data = [
+      'user_id' => $user->id
+    ];
+    $res = $this->actingAs($this->admin, 'admin')->deleteJson($this->url, $data);
+    $res->assertOk();
+
+    $this->assertEquals(User::count(), $user_count);
   }
 }

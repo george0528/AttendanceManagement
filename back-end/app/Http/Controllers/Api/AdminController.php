@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\AdminService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -51,7 +52,7 @@ class AdminController extends Controller
 	public function deleteUser(Request $request)
 	{
 		$val = Validator::make($request->all(), [
-			'user_id' => ['required', 'integer', 'exists:users,id'],
+			'user_id' => ['required', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
 		]);
 
 		if($val->fails()) {
@@ -63,7 +64,7 @@ class AdminController extends Controller
 	public function updateUser(Request $request)
 	{
 		$val = Validator::make($request->all(), [
-			'user_id' => ['required', 'integer', 'exists:users,id'],
+			'user_id' => ['required', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
 			'login_id' => ['nullable', 'string', 'min:6', 'unique:users,login_id'],
 			'password' => ['nullable', 'string', 'between:6, 12'],
 			'name' => ['nullable', 'string'],

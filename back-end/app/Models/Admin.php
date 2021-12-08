@@ -11,7 +11,6 @@ use Illuminate\Notifications\Notifiable;
 class Admin extends User
 {
     use Notifiable, HasFactory, SoftDeletes;
-    protected $dates = ['deleted_at'];
     protected $guard = 'admin';
     protected $guarded = ['id'];
 }

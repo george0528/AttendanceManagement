@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ShiftRequest extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $dates = ['deleted_at'];
     protected $guarded = ['id'];
     const UPDATED_AT = null;
 }

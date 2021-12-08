@@ -107,7 +107,7 @@ class UserTest extends TestCase
     $in_count = $count + 1;
     $response = $this->actingAs($this->user, 'user')->postJson($this->url);
     $response->assertOk();
-    $this->assertDatabaseCount('nows', $in_count);
+    $this->assertEquals(Now::count(), $in_count);
   }
 
   public function test_clockIn_failed()
@@ -119,7 +119,7 @@ class UserTest extends TestCase
     $response = $this->actingAs($this->user, 'user')->postJson($this->url);
     $response->assertStatus(400);
     $response->assertJsonFragment(['すでに出勤しています']);
-    $this->assertDatabaseCount('nows', $count);
+    $this->assertEquals(Now::count(), $count);
   }
 
   // 退勤
@@ -137,12 +137,11 @@ class UserTest extends TestCase
     $now_count = Now::count();
     $now_count--;
 
-
     $response = $this->actingAs($this->user, 'user')->postJson($this->url);
     $response->assertOk();
     
-    $this->assertDatabaseCount('nows', $now_count);
-    $this->assertDatabaseCount('histories', $history_count);
+    $this->assertEquals(Now::count(), $now_count);
+    $this->assertEquals(History::count(), $history_count);
   }
 
   public function test_clockOut_failed()
@@ -154,7 +153,7 @@ class UserTest extends TestCase
     $response = $this->actingAs($this->user, 'user')->postJson($this->url);
     $response->assertStatus(400);
 
-    $this->assertDatabaseCount('histories', $history_count);
+    $this->assertEquals(History::count(), $history_count);
   }
 
   // スケジュール取得
@@ -204,7 +203,7 @@ class UserTest extends TestCase
     ]);
     $response->assertOk();
 
-    $this->assertDatabaseCount('absence_requests', $absence_count);
+    $this->assertEquals(AbsenceRequest::count(), $absence_count);
   }
 
   public function test_absence_comment_success()
@@ -225,6 +224,6 @@ class UserTest extends TestCase
     $response->assertOk();
     $response->assertJsonFragment(['comment' => $comment]);
 
-    $this->assertDatabaseCount('absence_requests', $absence_count);
+    $this->assertEquals(AbsenceRequest::count(), $absence_count);
   }
 }

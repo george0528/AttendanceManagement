@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -23,7 +24,7 @@ class UserController extends Controller
   public function login(Request $request)
   {
     $val = Validator::make($request->all(), [
-      'login_id' => ['required', 'exists:users'],
+      'login_id' => ['required', Rule::exists('users', 'login_id')->whereNull('deleted_at')],
       'password' => ['required']
     ]);
 
@@ -68,7 +69,7 @@ class UserController extends Controller
   public function addAbsence(Request $request)
   {
     $val = Validator::make($request->all(), [
-      'schedule_id' => ['required', 'integer', 'exists:schedules,id'],
+      'schedule_id' => ['required', 'integer', Rule::exists('schedules', 'id')->whereNull('deleted_at')],
       'comment' => ['nullable', 'string'],
     ]);
 
