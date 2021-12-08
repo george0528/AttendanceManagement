@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -84,5 +85,36 @@ class AdminTest extends TestCase
     $res = $this->postJson($this->url);
     $res->assertStatus(401);
     $res->assertJsonFragment(['Unauthenticated']);
+  }
+
+  // user取得
+  public function test_user_get()
+  {
+    $this->url = $this->url.'/user';
+
+    $user_count = User::count();
+    $res = $this->actingAs($this->admin, 'admin')->getJson($this->url);
+    $res->assertOk();
+    
+    $json = $res->decodeResponseJson();
+    $this->assertEquals($user_count, count($json));
+  }
+
+  // user追加
+  public function test_user_add()
+  {
+    $this->url = $this->url.'/user';
+
+    $user_count = User::count();
+    $user_count++;
+
+    $data = [
+      'name' => 'testuser',
+      'age' => 18,
+      'password' => 'password',
+    ];
+    $res = $this->actingAs($this->admin, 'admin')->postJson($this->url, $data);
+    $res->assertOk();
+    $this->assertDatabaseCount('users', $user_count);
   }
 }

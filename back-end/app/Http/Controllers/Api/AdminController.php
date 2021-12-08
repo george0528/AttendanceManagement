@@ -36,9 +36,9 @@ class AdminController extends Controller
 	}
 	public function addUser(Request $request)
 	{
-		$val = Validate::make($request->all(),[
+		$val = Validator::make($request->all(),[
 			'name' => ['required', 'string'],
-			'age' => ['requred', 'integer'],
+			'age' => ['required', 'integer'],
 			'password' => ['between:6, 12'],
 		]);
 
