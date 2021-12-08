@@ -6,6 +6,7 @@ use App\Models\Admin;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
@@ -68,8 +69,20 @@ class AdminTest extends TestCase
   {
     $this->url = $this->url.'/logout';
 
-    $this->assertGuest('admin');
-    $res = $this->actingAs($this->admin, 'admin')->postJson($this->url);
+    Auth::guard('admin')->login($this->admin);
+    $this->assertAuthenticatedAs($this->admin, 'admin');
+    $res = $this->postJson($this->url);
     $res->assertOk();
+    $this->assertGuest('admin');
+  }
+
+  public function test_logout_failed()
+  {
+    $this->url = $this->url.'/logout';
+
+    $this->assertGuest('admin');
+    $res = $this->postJson($this->url);
+    $res->assertStatus(401);
+    $res->assertJsonFragment(['Unauthenticated']);
   }
 }
