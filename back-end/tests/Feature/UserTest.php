@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\AbsenceRequest;
 use App\Models\History;
 use App\Models\Now;
 use App\Models\Schedule;
@@ -190,7 +191,45 @@ class UserTest extends TestCase
     $response->assertOk();
 
     $json = $response->decodeResponseJson();
-    info('json', [$json]);
     $this->assertEquals($history_count, count($json)); 
+  }
+
+  // 欠勤申請
+  public function test_absence_success()
+  {
+    $this->url = $this->url.'/absence';
+
+    $schedule = Schedule::factory()->create(['user_id' => $this->user->id]);
+    
+    $absence_count = AbsenceRequest::count();
+    $absence_count++;
+
+    $response = $this->actingAs($this->user, 'user')->postJson($this->url, [
+      'schedule_id' => $schedule->id,
+    ]);
+    $response->assertOk();
+
+    $this->assertDatabaseCount('absence_requests', $absence_count);
+  }
+
+  public function test_absence_comment_success()
+  {
+    $this->url = $this->url.'/absence';
+
+    $schedule = Schedule::factory()->create(['user_id' => $this->user->id]);
+
+    $absence_count = AbsenceRequest::count();
+    $absence_count++;
+
+    $comment = '体調不良のため';
+
+    $response = $this->actingAs($this->user, 'user')->postJson($this->url, [
+      'schedule_id' => $schedule->id,
+      'comment' => $comment, 
+    ]);
+    $response->assertOk();
+    $response->assertJsonFragment(['comment' => $comment]);
+
+    $this->assertDatabaseCount('absence_requests', $absence_count);
   }
 }
