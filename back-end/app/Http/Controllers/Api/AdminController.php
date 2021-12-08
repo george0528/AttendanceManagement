@@ -28,7 +28,7 @@ class AdminController extends Controller
 	}
 	public function logout()
 	{
-		return $this->logout();
+		return $this->service->logout();
 	}
 	public function getUser()
 	{

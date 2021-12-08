@@ -55,7 +55,7 @@ Route::prefix('/admin')->group(function() {
   Route::post('/login', [AdminController::class, 'login']);
   // 認証済みグループ
   Route::middleware(['auth:admin'])->group(function () {
-    Route::get('/logout', [AdminController::class, 'logout']);
+    Route::post('/logout', [AdminController::class, 'logout']);
     // user操作
     Route::get('/user', [AdminController::class, 'getUser']);
     Route::post('/user', [AdminController::class, 'addUser']);

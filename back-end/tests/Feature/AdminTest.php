@@ -63,5 +63,13 @@ class AdminTest extends TestCase
     $this->assertGuest('admin');
   }
 
-  
+  // ログアウト
+  public function test_logout_success()
+  {
+    $this->url = $this->url.'/logout';
+
+    $this->assertGuest('admin');
+    $res = $this->actingAs($this->admin, 'admin')->postJson($this->url);
+    $res->assertOk();
+  }
 }
