@@ -6,11 +6,12 @@ use App\Models\AbsenceRequest;
 use App\Models\History;
 use App\Models\Now;
 use App\Models\Schedule;
+use App\Models\ShiftRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -225,5 +226,34 @@ class UserTest extends TestCase
     $response->assertJsonFragment(['comment' => $comment]);
 
     $this->assertEquals(AbsenceRequest::count(), $absence_count);
+  }
+
+  // シフト申請
+  public function test_shift_success()
+  {
+    $this->url = $this->url.'/schedule';
+
+    $shift_request_count = ShiftRequest::count();
+    $shift_request_count++;
+
+    $data = ['schedules' => [$this->schedule_data_generate()]];
+    $res = $this->actingAs($this->user, 'user')->postJson($this->url, $data);
+    $res->assertOk();
+
+    $this->assertEquals($shift_request_count, ShiftRequest::count());
+  }
+  
+  // シフト申請のテストデータ生成関数
+  public function schedule_data_generate()
+  {
+    $start_time = $this->faker->dateTimeBetween('tomorrow', '+2 week');
+    $start_time = new Carbon($start_time);
+    $end_time = new Carbon($start_time);
+    $end_time->addHour();
+    $schedule_data = [
+      'start_time' =>  $start_time->__toString(),
+      'end_time' => $end_time->__toString(),
+    ];
+    return $schedule_data;
   }
 }

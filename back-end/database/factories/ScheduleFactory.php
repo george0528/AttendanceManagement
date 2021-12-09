@@ -22,7 +22,7 @@ class ScheduleFactory extends Factory
 
     public function generateDate()
     {
-        return $this->faker->dateTimeBetween('now', '+2 week');
+        return $this->faker->dateTimeBetween('now', '+2 week')->format('Y-m-d H:i:s');
     }
     
 }

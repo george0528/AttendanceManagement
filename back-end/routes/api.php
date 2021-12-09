@@ -43,6 +43,7 @@ Route::prefix('/user')->group(function () {
   Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [UserController::class, 'logout']);
     Route::get('/schedule', [UserController::class, 'getSchedule']);
+    Route::post('/schedule', [UserController::class, 'addSchedule']);
     Route::get('/history', [UserController::class, 'getHistory']);
     Route::post('/absence', [UserController::class, 'addAbsence']);
     Route::post('/clockin', [UserController::class, 'clockIn']);
