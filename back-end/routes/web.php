@@ -47,3 +47,47 @@ Route::get('/fill', function(User $user) {
     return $user;
 });
 
+Route::get('/val', function(Request $request) {
+    $data =[
+        'users' => [
+            0 => [
+                'first_name' => 'aaaa',
+                'last_name' => 'bbbbb', 
+            ],
+            1 => [
+                // 'first_name' => 'cccc',
+                'last_name' => 'ddddddddddd',
+            ]
+        ]
+    ];
+
+    $val = Validator::make($data, [
+        'users.*.first_name' => 'required_with:users.*.last_name',
+    ]);
+
+    if($val->fails()) {
+        return response()->json($val->errors(), 400);
+    }
+    return response()->json($data, 200);
+});
+
+Route::get('/ary', function(Request $request) {
+    $data = [
+        'users' => [
+            1 => [
+                'name' => 'taro',
+                'admin' => true,
+            ],
+            2 => [
+                'name' => 'jiro',
+                'admin' => true,
+            ],
+        ],
+    ];
+    $val = Validator::make($data, [
+        'users' => ['required', 'array'],
+        'users.*.name' => ['required'],
+    ]);
+
+    return $val->validate();
+});

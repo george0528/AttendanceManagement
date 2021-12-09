@@ -236,13 +236,42 @@ class UserTest extends TestCase
     $shift_request_count = ShiftRequest::count();
     $shift_request_count++;
 
-    $data = ['schedules' => [$this->schedule_data_generate()]];
+    $data = [];
+
+    for ($i=0; $i < 3; $i++) { 
+      $data['schedules'][] = $this->schedule_data_generate();
+    }
+
     $res = $this->actingAs($this->user, 'user')->postJson($this->url, $data);
     $res->assertOk();
 
     $this->assertEquals($shift_request_count, ShiftRequest::count());
   }
   
+  public function test_shift_failed()
+  {
+    $this->url = $this->url.'/schedule';
+
+    $shift_request_count = ShiftRequest::count();
+
+    $data = [];
+
+    for ($i=0; $i < 20; $i++) { 
+      if($i == 10) {
+        $schedule = $this->schedule_data_generate();
+        $schedule['end_time'] = $schedule['start_time'];
+        $data['schedules'][] = $schedule;
+      } else {
+        $data['schedules'][] = $this->schedule_data_generate();
+      }
+    }
+
+    $res = $this->actingAs($this->user, 'user')->postJson($this->url, $data);
+    $res->assertStatus(400);
+
+    $this->assertEquals($shift_request_count, ShiftRequest::count());
+  }
+
   // シフト申請のテストデータ生成関数
   public function schedule_data_generate()
   {
