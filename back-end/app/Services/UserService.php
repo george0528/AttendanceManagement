@@ -87,7 +87,6 @@ class UserService
         $schedule['request_id'] = $shift_request->id;
         $new_schedules[] = $schedule;
       }
-      info('array', $new_schedules);
       DB::table('shift_request_dates')->insert($new_schedules);
       DB::commit();
       return response()->json($shift_request->with('shift_request_dates')->find($shift_request->id), 200);

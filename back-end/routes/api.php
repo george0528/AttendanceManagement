@@ -68,6 +68,7 @@ Route::prefix('/admin')->group(function() {
       Route::put('/delete', [AdminController::class, 'restoreDeleteUser']);
       Route::delete('/delete', [AdminController::class, 'forceDeleteUser']);
     });
+    Route::get('/shift', [AdminController::class, 'getShift']);
   });
 });
 

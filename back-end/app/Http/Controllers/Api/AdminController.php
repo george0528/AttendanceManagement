@@ -115,4 +115,10 @@ class AdminController extends Controller
 
 		return $this->service->forceDeleteUser($val->validated()['user_id']);
 	}
+
+	// シフトリクエストを取得
+	public function getShift()
+	{
+		return $this->service->getShift();
+	}
 }

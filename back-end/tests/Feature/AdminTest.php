@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
+use App\Models\ShiftRequest;
+use App\Models\ShiftRequestDate;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -192,5 +194,25 @@ class AdminTest extends TestCase
 
     $this->assertEquals($user_count, User::count());
     $this->assertEquals($delete_user_count, User::onlyTrashed()->count());
+  }
+
+  // シフト申請を取得
+  public function test_shift_request_get()
+  {
+    $this->url = $this->url.'/shift';
+
+    ShiftRequest::factory()->has(ShiftRequestDate::factory()->count(3), 'shift_request_dates')->create();
+
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertOk();
+    
+    $json = $res->json();
+    $request_dates = array_column($json, 'shift_request_dates');
+    $request_dates_count = 0;
+    for ($i=0; $i < count($request_dates); $i++) { 
+      $request_dates_count += count($request_dates[$i]);
+    }
+    $this->assertEquals(count($json), ShiftRequest::count());
+    $this->assertEquals($request_dates_count, ShiftRequestDate::count());
   }
 }

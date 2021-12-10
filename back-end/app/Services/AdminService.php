@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ShiftRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -101,6 +102,17 @@ class AdminService
         throw new Exception("完全に削除する事が出来ませんでした", 1);
       }
       return response()->json('success', 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
+
+  // シフトリクエストを取得
+  public function getShift()
+  {
+    try {
+      $shift_requests = ShiftRequest::with('shift_request_dates')->get();
+      return response()->json($shift_requests, 200);
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }
