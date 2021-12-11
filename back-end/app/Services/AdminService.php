@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\AbsenceRequest;
 use App\Models\ShiftRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -116,5 +117,12 @@ class AdminService
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }
+  }
+
+  // 欠勤申請取得
+  public function getAbsence()
+  {
+    $absence_requests = AbsenceRequest::all();
+    return response()->json($absence_requests, 200);
   }
 }

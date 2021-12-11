@@ -69,6 +69,7 @@ Route::prefix('/admin')->group(function() {
       Route::delete('/delete', [AdminController::class, 'forceDeleteUser']);
     });
     Route::get('/shift', [AdminController::class, 'getShift']);
+    Route::get('/absence', [AdminController::class, 'getAbsence']);
   });
 });
 

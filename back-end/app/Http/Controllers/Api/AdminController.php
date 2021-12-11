@@ -134,4 +134,11 @@ class AdminController extends Controller
 	{
 		return $this->service->getShift();
 	}
+
+
+	// 欠勤申請取得
+	public function getAbsence()
+	{
+		return $this->service->getAbsence();
+	}
 }
