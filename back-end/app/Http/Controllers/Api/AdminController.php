@@ -16,6 +16,8 @@ class AdminController extends Controller
 	public function __construct(AdminService $service) {
 		$this->service = $service;
 	}
+
+	// ログイン
 	public function login(Request $request)
 	{
 		$val = Validator::make($request->all(), [
@@ -27,14 +29,20 @@ class AdminController extends Controller
 		}
 		return $this->service->login($val->validated());
 	}
+
+	// ログアウト
 	public function logout()
 	{
 		return $this->service->logout();
 	}
+
+	// userを取得
 	public function getUser()
 	{
 		return $this->service->getUser();
 	}
+
+	// userを追加
 	public function addUser(Request $request)
 	{
 		$val = Validator::make($request->all(),[
@@ -49,18 +57,8 @@ class AdminController extends Controller
 
 		return $this->service->addUser($val->validated());
 	}
-	public function deleteUser(Request $request)
-	{
-		$val = Validator::make($request->all(), [
-			'user_id' => ['required', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
-		]);
 
-		if($val->fails()) {
-			return response()->json(['message' => 'fail'], 400);
-		}
-
-		return $this->service->deleteUser($val->safe()->only('user_id')['user_id']);
-	}
+	// user情報の変更
 	public function updateUser(Request $request)
 	{
 		$val = Validator::make($request->all(), [
@@ -81,6 +79,21 @@ class AdminController extends Controller
 		
 		return $this->service->updateUser($val);
 	}
+
+	// userを論理削除
+	public function deleteUser(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'user_id' => ['required', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at')],
+		]);
+
+		if($val->fails()) {
+			return response()->json(['message' => 'fail'], 400);
+		}
+
+		return $this->service->deleteUser($val->safe()->only('user_id')['user_id']);
+	}
+
 
 	// 論理削除のuserを取得
 	public function getDeleteUser()

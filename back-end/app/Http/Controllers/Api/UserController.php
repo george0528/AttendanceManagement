@@ -52,6 +52,22 @@ class UserController extends Controller
 
     return response()->json('fail', 400);
   }
+  
+  // シフト申請
+  public function addSchedule(Request $request)
+  {
+    $val = Validator::make($request->all(), [
+      'schedules' => ['required', 'array'],
+      'schedules.*.start_time' => ['required', 'date_format:Y-m-d H:i:s', 'after:tomorrow'],
+      'schedules.*.end_time' => ['required', 'date_format:Y-m-d H:i:s', 'after:schedules.*.start_time', ],
+    ]);
+    
+    if($val->fails()) {
+      return response()->json($val->errors(), 400);
+    }
+
+    return $this->service->addSchedule($val->validated()['schedules']);
+  }
 
   // 就業履歴
   public function getHistory()
@@ -110,21 +126,5 @@ class UserController extends Controller
     }
 
     return response()->json('まだ出勤していません', 400);
-  }
-
-  // シフト申請
-  public function addSchedule(Request $request)
-  {
-    $val = Validator::make($request->all(), [
-      'schedules' => ['required', 'array'],
-      'schedules.*.start_time' => ['required', 'date_format:Y-m-d H:i:s', 'after:tomorrow'],
-      'schedules.*.end_time' => ['required', 'date_format:Y-m-d H:i:s', 'after:schedules.*.start_time', ],
-    ]);
-    
-    if($val->fails()) {
-      return response()->json($val->errors(), 400);
-    }
-
-    return $this->service->addSchedule($val->validated()['schedules']);
   }
 }
