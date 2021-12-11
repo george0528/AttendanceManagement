@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\AbsenceRequest;
 use App\Models\Admin;
+use App\Models\History;
 use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
@@ -230,5 +231,17 @@ class AdminTest extends TestCase
     $res->assertOk();
 
     $this->assertEquals(count($res->json()), AbsenceRequest::count());
+  }
+
+  public function test_hitory_get()
+  {
+    $this->url = $this->url.'/history';
+
+    History::factory(5)->create();
+
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertOk();
+
+    $this->assertEquals(count($res->json()), History::count());
   }
 }
