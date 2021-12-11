@@ -11,4 +11,9 @@ class Schedule extends Model
     use HasFactory, SoftDeletes;
     protected $guarded = ['id'];
     public $timestamps = false;
+
+    public function absence_requests()
+    {
+        return $this->hasMany(AbsenceRequest::class);
+    }
 }

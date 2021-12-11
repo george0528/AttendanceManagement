@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\AbsenceRequest;
 use App\Models\Admin;
+use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
 use App\Models\User;
@@ -214,5 +216,19 @@ class AdminTest extends TestCase
     }
     $this->assertEquals(count($json), ShiftRequest::count());
     $this->assertEquals($request_dates_count, ShiftRequestDate::count());
+  }
+
+  // 欠勤申請取得
+  public function test_absence_request_get()
+  {
+    $this->url = $this->url.'/absence';
+
+    Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
+    Schedule::factory()->create();
+
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertOk();
+
+    $this->assertEquals(count($res->json()), AbsenceRequest::count());
   }
 }
