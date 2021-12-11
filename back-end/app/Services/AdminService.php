@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 
 class AdminService
 {
+  // ログイン
   public function login($credentials)
   {
     if(Auth::guard('admin')->attempt($credentials)) {
@@ -20,6 +21,8 @@ class AdminService
 
     return response()->json(['message' => 'fail'], 400);
   }
+
+  // ログアウト
   public function logout()
   {
     if(Auth::guard('admin')->check()) {
@@ -31,11 +34,15 @@ class AdminService
 
     return response()->json(['message' => 'fail'], 400); 
   }
+
+  // user取得
   public function getUser()
   {
     $users = User::all();
     return response()->json($users, 200);
   }
+
+  // user追加
   public function addUser($data)
   {
     try {
@@ -50,6 +57,8 @@ class AdminService
       return response()->json($e, 400);
     }
   }
+
+  // user削除
   public function deleteUser($user_id)
   {
     try {
@@ -59,6 +68,8 @@ class AdminService
      return response()->json($e, 400);
     }
   }
+
+  // user情報の編集
   public function updateUser($data)
   {
     try {
