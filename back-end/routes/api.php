@@ -70,6 +70,7 @@ Route::prefix('/admin')->group(function() {
     });
     Route::get('/shift', [AdminController::class, 'getShift']);
     Route::get('/absence', [AdminController::class, 'getAbsence']);
+    Route::get('/history', [AdminController::class, 'getHistory']);
   });
 });
 

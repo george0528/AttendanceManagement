@@ -141,4 +141,10 @@ class AdminController extends Controller
 	{
 		return $this->service->getAbsence();
 	}
+
+	// 就業履歴の確認
+	public function getHistory()
+	{
+		return $this->service->getHistory();
+	}
 }

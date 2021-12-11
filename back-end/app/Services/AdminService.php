@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AbsenceRequest;
+use App\Models\History;
 use App\Models\ShiftRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -135,5 +136,12 @@ class AdminService
   {
     $absence_requests = AbsenceRequest::all();
     return response()->json($absence_requests, 200);
+  }
+
+  // 就業履歴取得
+  public function getHistory()
+  {
+    $histories = History::all();
+    return response()->json($histories, 200);
   }
 }
