@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Now;
 use App\Models\Schedule;
+use App\Services\AuthService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -16,23 +17,25 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
   private $service;
-  public function __construct(UserService $service) {
+  public function __construct(UserService $service, AuthService $auth) {
     $this->service = $service;
+    $this->auth = $auth;
   }
 
   // ログイン
   public function login(Request $request)
   {
     $val = Validator::make($request->all(), [
-      'login_id' => ['required', Rule::exists('users', 'login_id')->whereNull('deleted_at')],
+      'login_id' => ['required'],
       'password' => ['required']
     ]);
 
     if($val->fails()) {
+      // $this->auth->loginFailed();
       return new JsonResponse('fail val', 400);
     }
     
-    return $this->service->login($val->validated());
+    return $this->service->login($val->validated(), $request->ip());
   }
 
   // ログアウト

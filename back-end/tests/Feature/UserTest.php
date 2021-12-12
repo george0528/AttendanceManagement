@@ -8,6 +8,7 @@ use App\Models\Now;
 use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -50,14 +51,29 @@ class UserTest extends TestCase
     
     $response = $this->postJson($this->url, []);
     $response->assertStatus(400);
-    $response->assertJsonFragment(['fail val']);
+
+    // ログインロックチェックテスト
+    for ($i=0; $i < 6; $i++) { 
+      $response = $this->postJson($this->url, [
+        'login_id' => $this->user['login_id'],
+        'password' => 'passssss'
+      ]);
+      if($i == 5) {
+        $response->assertStatus(400);
+        $response->assertJsonFragment(['ログインの試行回数を超えました']);
+        $this->assertGuest('user');
+
+        // ログインロック解除
+        $auth = new AuthService;
+        $auth->login_success($this->user['login_id'], request()->ip());
+      }
+    }
 
     $response = $this->postJson($this->url, [
       'login_id' => 'fajdlfjaljdlfadddddd',
       'password' => 'password',
     ]);
     $response->assertStatus(400);
-    $response->assertJsonFragment(['fail val']);
 
     $response = $this->postJson($this->url, [
       'login_id' => $this->user->login_id

@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
 use App\Models\User;
+use App\Services\AuthService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -52,6 +53,23 @@ class AdminTest extends TestCase
       'password' => '',
     ];
     $this->login_failed_check($data);
+
+    // ログインロックのテスト
+    for ($i=0; $i < 6; $i++) { 
+      $response = $this->postJson($this->url, [
+        'email' => $this->admin['email'],
+        'password' => 'passssss'
+      ]);
+      if($i == 5) {
+        $response->assertStatus(400);
+        $response->assertJsonFragment(['ログインの試行回数を超えました']);
+        $this->assertGuest('admin');
+
+        // ログインロック解除
+        $auth = new AuthService;
+        $auth->login_success($this->admin['email'], request()->ip());
+      }
+    }
 
     $data['email'] = $this->admin->email;
     $this->login_failed_check($data);
@@ -218,6 +236,7 @@ class AdminTest extends TestCase
     $this->assertEquals(count($json), ShiftRequest::count());
     $this->assertEquals($request_dates_count, ShiftRequestDate::count());
   }
+  
 
   // 欠勤申請取得
   public function test_absence_request_get()
@@ -233,6 +252,7 @@ class AdminTest extends TestCase
     $this->assertEquals(count($res->json()), AbsenceRequest::count());
   }
 
+  // 就業履歴の取得
   public function test_hitory_get()
   {
     $this->url = $this->url.'/history';

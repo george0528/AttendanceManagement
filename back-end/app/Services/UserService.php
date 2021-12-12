@@ -10,16 +10,23 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class UserService
+class UserService extends AuthService
 {
 
   // ログイン処理
-  public function login($credentails)
+  public function login($credentails, $ip_address)
   {
+    if($this->is_login_lock($credentails['login_id'], $ip_address)) {
+      return response()->json('ログインの試行回数を超えました', 400);
+    }
+
     if(Auth::attempt($credentails)) {
+      $this->login_success($credentails['login_id'], $ip_address);
       session()->regenerate();
       return response()->json(['message' => 'success', 'name' => Auth::user()->name], 200);
     }
+
+    $this->login_failed($credentails['login_id'], $ip_address);
     return response()->json(['message' => 'fail'], 400);
   }
 

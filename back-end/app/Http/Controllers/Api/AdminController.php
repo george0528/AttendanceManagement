@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\AdminService;
+use App\Services\AuthService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -13,8 +14,9 @@ class AdminController extends Controller
 {
 	private $service;
 
-	public function __construct(AdminService $service) {
+	public function __construct(AdminService $service, AuthService $auth) {
 		$this->service = $service;
+		$this->auth = $auth;
 	}
 
 	// ログイン
@@ -24,10 +26,12 @@ class AdminController extends Controller
 			'email' => ['required', 'email'],
 			'password' => ['required'],
 		]);
+
 		if($val->fails()) {
 			return response()->json(['message' => 'val fail'], 400);
 		}
-		return $this->service->login($val->validated());
+
+		return $this->service->login($val->validated(), $request->ip());
 	}
 
 	// ログアウト
@@ -135,6 +139,11 @@ class AdminController extends Controller
 		return $this->service->getShift();
 	}
 
+	// スケジュールを追加
+	public function addSchedule()
+	{
+		return $this->service->addSchedule();
+	}
 
 	// 欠勤申請取得
 	public function getAbsence()

@@ -10,16 +10,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class AdminService
+class AdminService extends AuthService
 {
   // ログイン
-  public function login($credentials)
+  public function login($credentials, $ip_address)
   {
+    if($this->is_login_lock($credentials['email'], $ip_address)) {
+      return response()->json('ログインの試行回数を超えました', 400);
+    }
     if(Auth::guard('admin')->attempt($credentials)) {
+      $this->login_success($credentials['email'], $ip_address);
       session()->regenerate();
       return response()->json(['message' => 'success', 'name' => Auth::guard('admin')->user()->name], 200);
     }
 
+    $this->login_failed($credentials['email'], $ip_address);
     return response()->json(['message' => 'fail'], 400);
   }
 
