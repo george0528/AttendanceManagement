@@ -143,6 +143,19 @@ class AdminService extends AuthService
     return response()->json($absence_requests, 200);
   }
 
+  // 欠勤申請を承諾
+  public function putAbsence($absence_id)
+  {
+    try {
+      $absence = AbsenceRequest::find($absence_id);
+      $absence->request_check = true;
+      $absence->save();
+      return response()->json('success', 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
+  
   // 就業履歴取得
   public function getHistory()
   {

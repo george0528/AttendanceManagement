@@ -151,6 +151,20 @@ class AdminController extends Controller
 		return $this->service->getAbsence();
 	}
 
+	// 欠勤申請を承諾
+	public function putAbsence(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'absence_id' => ['required', 'integer', Rule::exists('absence_requests')->whereNotNull('deleted_at')],
+		]);
+
+		if($val->fails()) {
+			return response()->json('fail', 400);
+		}
+
+		return $this->service->putAbsence($val->validated()['absence_id']);
+	}
+
 	// 就業履歴の確認
 	public function getHistory()
 	{
