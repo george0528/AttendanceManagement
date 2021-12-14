@@ -180,13 +180,11 @@ class UserTest extends TestCase
 
     Schedule::factory(3)->create(['user_id' => $this->user->id]);
 
-    $schedule_count = Schedule::count();
-
     $response = $this->actingAs($this->user, 'user')->getJson($this->url);
     $response->assertOk();
 
-    $json = $response->decodeResponseJson();
-    $this->assertEquals($schedule_count, count($json));
+    $json = $response->json();
+    $this->assertEquals(Schedule::count(), count($json));
   }
 
   // 就業履歴取得
