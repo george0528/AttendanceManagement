@@ -244,12 +244,23 @@ class AdminTest extends TestCase
     $this->url = $this->url.'/absence';
 
     Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
-    Schedule::factory()->create();
 
     $res = $this->actingAs($this->admin, 'admin')->get($this->url);
     $res->assertOk();
 
     $this->assertEquals(count($res->json()), AbsenceRequest::count());
+  }
+
+  // 欠勤申請を承諾
+  public function test_absence_request_put()
+  {
+    $this->url = $this->url.'/absence';
+
+    $schedule =  Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
+    $datas = AbsenceRequest::where('schedule_id', $schedule->id)->get();
+
+    $res = $this->actingAs($this->admin, 'admin')->putJson($this->url, ['absence_id' => $datas[0]->id]);
+    $res->assertOk();
   }
 
   // 就業履歴の取得

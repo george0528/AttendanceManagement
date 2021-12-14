@@ -155,7 +155,7 @@ class AdminController extends Controller
 	public function putAbsence(Request $request)
 	{
 		$val = Validator::make($request->all(), [
-			'absence_id' => ['required', 'integer', Rule::exists('absence_requests')->whereNotNull('deleted_at')],
+			'absence_id' => ['required', 'integer', Rule::exists('absence_requests', 'id')->whereNull('deleted_at')],
 		]);
 
 		if($val->fails()) {
