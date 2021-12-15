@@ -14,14 +14,14 @@ class History extends Model
   public $timestamps = false;
 
   // 配列データの就業時間の合計
-  public static function get_times(array $histories): array
+  public static function getTimes($histories): array
   {
     $sum_times = 0;
     $midnight_times = 0;
 
     foreach ($histories as $history) {
-      $sum_times += $history->sum_time();
-      $midnight_times += $history->midnight_time();
+      $sum_times += $history->sumTime();
+      $midnight_times += $history->midnightTime();
     }
 
     $data = [
@@ -33,7 +33,7 @@ class History extends Model
   }
 
   // 就業時間の合計を算出
-  public function sum_time(): int
+  public function sumTime(): int
   {
     $start_time = new Carbon($this->start_time);
     $end_time = new Carbon($this->end_time);
@@ -43,18 +43,18 @@ class History extends Model
   }
 
   // 深夜時間を算出
-  public function midnight_time(): int 
+  public function midnightTime(): int 
   {
     $start_time = new Carbon($this->start_time);
     $end_time = new Carbon($this->end_time);
 
     // 出勤時間と退勤時間が日付をまたいでいなかったら
     if($start_time->month == $end_time->month && $start_time->day == $end_time->day) {
-      $start_time = $this->change_minute($start_time);
-      $end_time = $this->change_minute($end_time);
+      $start_time = $this->changeMinute($start_time);
+      $end_time = $this->changeMinute($end_time);
     } else {
-      $start_time = $this->change_minute($start_time);
-      $end_time = $this->change_minute($end_time) + 24 * 60;
+      $start_time = $this->changeMinute($start_time);
+      $end_time = $this->changeMinute($end_time) + 24 * 60;
     }
 
     // 出勤時間が日付をまたいでいないかつ5時より前に出勤している場合
@@ -94,7 +94,7 @@ class History extends Model
   }
 
   // 分にする
-  public function change_minute($time)
+  public function changeMinute($time)
   {
     return $time->hour * 60 + $time->minute;
   }

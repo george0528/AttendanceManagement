@@ -194,13 +194,27 @@ class UserTest extends TestCase
 
     History::factory(3)->create(['user_id' => $this->user->id]);
 
-    $history_count = History::count();
+    $history_count = History::where('user_id', $this->user->id)->count();
 
     $response = $this->actingAs($this->user, 'user')->getJson($this->url);
     $response->assertOk();
 
-    $json = $response->decodeResponseJson();
+    $json = $response->json();
     $this->assertEquals($history_count, count($json)); 
+  }
+
+  // 就業時間の取得
+  public function test_history_time_success()
+  {
+    $this->url = $this->url.'/history/time';
+
+    History::factory(3)->create(['user_id' => $this->user->id]);
+
+    $res = $this->actingAs($this->user, 'user')->getJson($this->url);
+    $res->assertOk();
+
+    $json = $res->json();
+
   }
 
   // 欠勤申請
