@@ -13,7 +13,32 @@ class History extends Model
   protected $guarded = ['id'];
   public $timestamps = false;
 
-  public function midnight_time() {
+  // 配列データの就業時間の合計
+  public static function sum_time(array $histories): int
+  {
+    $sum_time = 0;
+    foreach ($histories as $history) {
+      $start_time = new Carbon($history->start_time);
+      $end_time = new Carbon($history->end_time);
+
+      $diff_time = $start_time->diffInMinutes($end_time);
+      $sum_time += $diff_time; 
+    }
+    return $sum_time;
+  }
+  
+  // 配列データの深夜時間の合計を返す
+  public static function midnight_time_sum(array $histories): int
+  {
+    $midnight_time = 0;
+    foreach ($histories as $history) {
+      $midnight_time += $history->midnight_time();
+    }
+    return $midnight_time;
+  }
+
+  // 深夜時間を算出
+  public function midnight_time(): int {
     $start_time = new Carbon($this->start_time);
     $end_time = new Carbon($this->end_time);
 
@@ -37,7 +62,6 @@ class History extends Model
     
     // 出勤時間が22時以降かつ5時前なら
     if($night_start_time <= $start_time) {
-      info('1 true');
       
       // 退勤時間が5時を過ぎる場合
       if($night_end_time <= $end_time) {
@@ -50,14 +74,15 @@ class History extends Model
 
     // 出勤時間が22時前かつ退勤時間の時間が22時より後なら
     if($night_start_time - $start_time < $end_time - $start_time) {
-      info('2 true');
+
+      // 退勤時間が5時を超えていたら
       if($night_end_time <= $end_time) {
         return $night_end_time - $night_start_time;
       }
+
       return $end_time - $start_time;
     }
 
-    info('3 true');
     // 深夜時間ではなかったら
     return 0;
   }
