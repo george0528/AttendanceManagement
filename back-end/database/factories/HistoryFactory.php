@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class HistoryFactory extends Factory
@@ -14,11 +15,15 @@ class HistoryFactory extends Factory
      */
     public function definition()
     {
-        return [
+        $data = [
             'user_id' => User::first()->id,
             'start_time' => $this->generateDate(),
             'end_time' => $this->generateDate(),
         ];
+        $start_time = new Carbon($data['start_time']);
+        $end_time = $start_time->addHours(mt_rand(1, 10));
+        $data['end_time'] = $end_time;
+        return $data;
     }
 
     public function generateDate()

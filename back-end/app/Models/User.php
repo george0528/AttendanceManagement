@@ -43,6 +43,7 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
+  // ログインID生成
   public function loginIdGenerate()
   {
     $loop_flag = true;
@@ -56,24 +57,34 @@ class User extends Authenticatable
       }
     }
   }
+
+  // スケジュールのhasmany
   public function schedules()
   {
     return $this->hasMany(Schedule::class);
   }
+
+  // ユーザーのスケジュール取得 
   public function getSchedules()
   {
     $id = $this->id;
     return Schedule::where('user_id', $id)->get();
   }
+
+  // 就業履歴のhasmany
   public function histories()
   {
     return $this->hasMany(History::class);
   }
+
+  // 就業履歴の取得 
   public function getHistories()
   {
     $id = $this->id;
     return History::where('user_id', $id)->get();
   }
+
+  // 現在出勤しているか
   public function is_attendance()
   {
     $id = $this->id;
