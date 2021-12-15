@@ -45,6 +45,7 @@ Route::prefix('/user')->group(function () {
     Route::get('/schedule', [UserController::class, 'getSchedule']);
     Route::post('/schedule', [UserController::class, 'addSchedule']);
     Route::get('/history', [UserController::class, 'getHistory']);
+    Route::get('/history/time', [UserController::class, 'getHistoryTime']);
     Route::post('/absence', [UserController::class, 'addAbsence']);
     Route::post('/clockin', [UserController::class, 'clockIn']);
     Route::post('/clockout', [UserController::class, 'clockOut']);

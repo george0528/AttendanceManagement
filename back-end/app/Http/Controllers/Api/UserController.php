@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\History;
 use App\Models\Now;
 use App\Models\Schedule;
 use App\Services\AuthService;
@@ -82,6 +83,17 @@ class UserController extends Controller
     }
 
     return response()->json('fail', 400);
+  }
+
+  // 就業時間の合計を返す
+  public function getHistoryTime()
+  {
+    if(Auth::check()) {
+      $user = Auth::user();
+      $histories = $user->getHistories();
+      $data = History::sum_times($histories);
+      return response()->json($data, 200);
+    }
   }
 
   // 欠勤申請

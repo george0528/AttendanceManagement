@@ -14,31 +14,37 @@ class History extends Model
   public $timestamps = false;
 
   // 配列データの就業時間の合計
-  public static function sum_time(array $histories): int
+  public static function get_times(array $histories): array
   {
-    $sum_time = 0;
-    foreach ($histories as $history) {
-      $start_time = new Carbon($history->start_time);
-      $end_time = new Carbon($history->end_time);
+    $sum_times = 0;
+    $midnight_times = 0;
 
-      $diff_time = $start_time->diffInMinutes($end_time);
-      $sum_time += $diff_time; 
-    }
-    return $sum_time;
-  }
-  
-  // 配列データの深夜時間の合計を返す
-  public static function midnight_time_sum(array $histories): int
-  {
-    $midnight_time = 0;
     foreach ($histories as $history) {
-      $midnight_time += $history->midnight_time();
+      $sum_times += $history->sum_time();
+      $midnight_times += $history->midnight_time();
     }
-    return $midnight_time;
+
+    $data = [
+      'sum_times' => $sum_times,
+      'midnight_times' => $midnight_times,
+    ];
+
+    return $data;
+  }
+
+  // 就業時間の合計を算出
+  public function sum_time(): int
+  {
+    $start_time = new Carbon($this->start_time);
+    $end_time = new Carbon($this->end_time);
+
+    $diff_time = $start_time->diffInMinutes($end_time);
+    return $diff_time;
   }
 
   // 深夜時間を算出
-  public function midnight_time(): int {
+  public function midnight_time(): int 
+  {
     $start_time = new Carbon($this->start_time);
     $end_time = new Carbon($this->end_time);
 
@@ -91,10 +97,5 @@ class History extends Model
   public function change_minute($time)
   {
     return $time->hour * 60 + $time->minute;
-  }
-
-  public function test()
-  {
-    return $this->midnight_time();
   }
 }
