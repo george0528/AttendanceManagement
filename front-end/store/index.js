@@ -3,7 +3,9 @@ export const state = () => ({
   alert: {
     status: 'none',
     message: '',
-  }
+  },
+  is_user_login: false,
+  is_admin_login: false,
 });
 
 export const mutations = {
@@ -18,7 +20,14 @@ export const mutations = {
   alertFail(state, message) {
     state.alert.status = 'danger';
     state.alert.message = message;
+  },
+  toggleUserLogin(state) {
+    state.is_user_login = !state.is_user_login;
+  },
+  toggleAdminLogin(state) {
+    state.is_admin_login = !state.is_admin_login;
   }
+  
 };
 
 export const actions = {
@@ -32,5 +41,8 @@ export const actions = {
 export const getters = {
   message(state) {
     return state.alert.message;
+  },
+  auth(state) {
+    return state.is_login;
   }
 };

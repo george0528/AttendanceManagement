@@ -11,9 +11,11 @@
 
 <script>
 export default {
-  data: {
-    email: '',
-    password: ''
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
   },
   methods: {
     async adminLogin() {
