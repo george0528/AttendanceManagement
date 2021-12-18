@@ -29,6 +29,20 @@ class UserTest extends TestCase
     $this->url = '/api/user';
   }
 
+  // ユーザー情報を取得
+  public function test_user_get_success()
+  {
+    $res = $this->actingAs($this->user, 'user')->get($this->url);
+    $res->assertOk();
+  }
+
+  public function test_user_get_fail()
+  {
+    $this->assertGuest('user');
+    $res = $this->get($this->url);
+    $res->assertStatus(400);
+  }
+
   // ログイン
   public function test_login_success()
   {

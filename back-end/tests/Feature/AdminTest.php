@@ -27,7 +27,21 @@ class AdminTest extends TestCase
   $this->admin = Admin::factory()->create();
   $this->url = '/api/admin';   
   }
+
+  // 運営者情報の取得
+  public function test_admin_get_success()
+  {
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertOk();
+  }
   
+  public function test_admin_get_fail()
+  {
+    $this->assertGuest('admin');
+    $res = $this->get($this->url);
+    $res->assertStatus(400);
+  }
+
   // ログイン
   public function test_login_success()
   {
@@ -236,7 +250,6 @@ class AdminTest extends TestCase
     $this->assertEquals(count($json), ShiftRequest::count());
     $this->assertEquals($request_dates_count, ShiftRequestDate::count());
   }
-  
 
   // 欠勤申請取得
   public function test_absence_request_get()
