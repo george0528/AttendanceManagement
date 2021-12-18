@@ -23,6 +23,12 @@ class UserController extends Controller
     $this->auth = $auth;
   }
 
+  // ユーザー情報を取得
+  public function getUser()
+  {
+    return $this->service->getUser();
+  }
+  
   // ログイン
   public function login(Request $request)
   {

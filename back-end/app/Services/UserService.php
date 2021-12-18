@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\DB;
 
 class UserService extends AuthService
 {
+  // ユーザー情報を取得
+  public function getUser()
+  {
+    if(Auth::check()) {
+      return response()->json(Auth::user(), 200);
+    }
+
+    return response()->json('ログインしていません', 400);
+  }
 
   // ログイン処理
   public function login($credentails, $ip_address)

@@ -12,6 +12,15 @@ use Illuminate\Support\Str;
 
 class AdminService extends AuthService
 {
+  // 運営者情報を取得
+  public function getAdmin()
+  {
+    if(Auth::guard('admin')->check()) {
+      return response()->json(Auth::guard('admin')->user(), 200);
+    }
+
+    return response()->json('ログインしていません', 400);
+  }
   // ログイン
   public function login($credentials, $ip_address)
   {

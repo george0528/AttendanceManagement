@@ -38,6 +38,7 @@ Route::get('/session/delete', function(Request $request) {
 
 // user
 Route::prefix('/user')->group(function () {
+  Route::get('/', [UserController::class, 'getUser']);
   Route::post('/login', [UserController::class, 'login'])->name('login');
   // user認証済み
   Route::middleware(['auth:sanctum'])->group(function () {
@@ -54,6 +55,7 @@ Route::prefix('/user')->group(function () {
 
 // admin
 Route::prefix('/admin')->group(function() {
+  Route::get('/', [AdminController::class, 'getAdmin']);
   Route::post('/login', [AdminController::class, 'login']);
   // 認証済みグループ
   Route::middleware(['auth:admin'])->group(function () {

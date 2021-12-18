@@ -19,6 +19,12 @@ class AdminController extends Controller
 		$this->auth = $auth;
 	}
 
+	// 運営者情報を取得
+	public function getAdmin()
+	{
+		return $this->service->getAdmin();
+	}
+
 	// ログイン
 	public function login(Request $request)
 	{
