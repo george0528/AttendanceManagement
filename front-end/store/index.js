@@ -2,7 +2,7 @@ export const state = () => ({
   count: 1,
   alert: {
     status: 'none',
-    message: 'test',
+    message: '',
   }
 });
 
@@ -11,9 +11,13 @@ export const mutations = {
     state.count += 1;
     console.log(state.count);
   },
-  updateAlertData(state, alert_data) {
-    state.alert.status = alert_data.status;
-    state.alert.message = alert_data.message;
+  alertSuccess(state, message) {
+    state.alert.status = 'success';
+    state.alert.message = message;
+  },
+  alertFail(state, message) {
+    state.alert.status = 'danger';
+    state.alert.message = message;
   }
 };
 

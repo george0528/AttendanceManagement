@@ -21,4 +21,8 @@
     color: #a94442;
   }
 }
+
+.none {
+  display: none;
+}
 </style>

@@ -19,31 +19,19 @@ export default {
   },
   methods: {
     async userLogin() {
-      // alertデータ作成
-      let alert_data = {
-        'status': 'none',
-        'message': '',
-      }
-
       // api
       await this.$axios.post('/api/user/login', {
         login_id: this.login_id,
         password: this.password,
       })
       .then(res => {
-        console.log('true',res);
-        alert_data.status = 'success';
-        alert_data.message = 'ログインに成功しました';
+        this.$store.commit('alertSuccess', 'ログインに成功しました');
       })
       .catch(e => {
-        console.log('error',e.response);
-        alert_data.status = 'danger';
-        alert_data.message = 'ログインに失敗しました';
-        alert_data.message = e.response.data;
+        let message = e.response.data;
+        this.$store.commit('alertFail', message);
       });
-      
-      // storeのalertデータを変更
-      this.$store.commit('updateAlertData', alert_data);
+
       // inputを空白にする
       this.login_id = '';
       this.password = '';
