@@ -3,11 +3,14 @@ export default {
   vue: {
     devtools: true
   },
+
+  mode: 'universal',
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'front-end',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
@@ -44,6 +47,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
+  
   axios: {
     credentials: true
   },
