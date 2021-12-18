@@ -27,7 +27,7 @@ class UserService extends AuthService
     }
 
     $this->login_failed($credentails['login_id'], $ip_address);
-    return response()->json(['message' => 'fail'], 400);
+    return response()->json('ログインに失敗しました', 400);
   }
 
   // ログアウト処理
@@ -40,7 +40,7 @@ class UserService extends AuthService
       return response()->json(['message' => 'success'], 200);
     }
 
-    return response()->json(['message' => 'fail'], 400); 
+    return response()->json('ログインに失敗しました', 400); 
   }
 
   // 欠勤申請処理

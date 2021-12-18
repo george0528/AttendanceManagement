@@ -28,7 +28,7 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			return response()->json(['message' => 'val fail'], 400);
+			return response()->json('ログインに失敗しました', 400);
 		}
 
 		return $this->service->login($val->validated(), $request->ip());
@@ -56,7 +56,7 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			return response()->json(['message' => 'fail'], 400);
+			return response()->json('ユーザーの追加に失敗しました', 400);
 		}
 
 		return $this->service->addUser($val->validated());
@@ -75,7 +75,7 @@ class AdminController extends Controller
 
 
 		if($val->fails()) {
-			return response()->json(['message' => 'fail'], 400);
+			return response()->json('ユーザー情報の変更に失敗しました', 400);
 		}
 
 		// 空文字,null,0削除
@@ -92,7 +92,7 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			return response()->json(['message' => 'fail'], 400);
+			return response()->json('そのユーザーは存在しません', 400);
 		}
 
 		return $this->service->deleteUser($val->safe()->only('user_id')['user_id']);
@@ -113,7 +113,7 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			return response()->json('fail', 400);
+			return response()->json('そのユーザーを復元できませんでした', 400);
 		}
 
 		return $this->service->restoreDeleteUser($val->validated()['user_id']);
@@ -127,7 +127,7 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			return response()->json('fail', 400);
+			return response()->json('ユーザーを完全に削除することが出来ませんでした', 400);
 		}
 
 		return $this->service->forceDeleteUser($val->validated()['user_id']);
@@ -159,7 +159,7 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			return response()->json('fail', 400);
+			return response()->json('欠勤処理を承諾出来ませんでした', 400);
 		}
 
 		return $this->service->putAbsence($val->validated()['absence_id']);

@@ -32,8 +32,7 @@ class UserController extends Controller
     ]);
 
     if($val->fails()) {
-      // $this->auth->loginFailed();
-      return new JsonResponse('fail val', 400);
+      return new JsonResponse('ログインに失敗しました', 400);
     }
     
     return $this->service->login($val->validated(), $request->ip());
@@ -54,7 +53,7 @@ class UserController extends Controller
       return response()->json($schedules, 200);
     }
 
-    return response()->json('fail', 400);
+    return response()->json('スケジュールの取得に失敗しました', 400);
   }
   
   // シフト申請
@@ -73,7 +72,7 @@ class UserController extends Controller
     return $this->service->addSchedule($val->validated()['schedules']);
   }
 
-  // 就業履歴
+  // 就業履歴の取得
   public function getHistory()
   {
     if(Auth::check()) {
@@ -82,7 +81,7 @@ class UserController extends Controller
       return response()->json($histories, 200);
     }
 
-    return response()->json('fail', 400);
+    return response()->json('就業履歴の取得に失敗しました', 400);
   }
 
   // 就業時間の合計を返す
@@ -106,7 +105,7 @@ class UserController extends Controller
     ]);
 
     if($val->fails()) {
-      return new JsonResponse('fails', 400);
+      return new JsonResponse('欠勤申請に失敗しました', 400);
     }
 
     $val = array_filter($val->validated());

@@ -18,6 +18,7 @@ class AdminService extends AuthService
     if($this->is_login_lock($credentials['email'], $ip_address)) {
       return response()->json('ログインの試行回数を超えました', 400);
     }
+
     if(Auth::guard('admin')->attempt($credentials)) {
       $this->login_success($credentials['email'], $ip_address);
       session()->regenerate();
@@ -25,7 +26,7 @@ class AdminService extends AuthService
     }
 
     $this->login_failed($credentials['email'], $ip_address);
-    return response()->json(['message' => 'fail'], 400);
+    return response()->json('ログインに失敗しました', 400);
   }
 
   // ログアウト
@@ -35,10 +36,10 @@ class AdminService extends AuthService
       Auth::guard('admin')->logout();
       session()->invalidate();
       session()->regenerateToken();
-      return response()->json(['message' => 'success'], 200);
+      return response()->json('ログアウトに成功しました', 200);
     }
 
-    return response()->json(['message' => 'fail'], 400); 
+    return response()->json('ログアウトに失敗しました', 400); 
   }
 
   // user取得
@@ -69,7 +70,7 @@ class AdminService extends AuthService
   {
     try {
       User::destroy($user_id);
-      return response()->json(['message' => 'success'], 200);
+      return response()->json('ユーザーを削除しました', 200);
     } catch (\Exception $e) {
      return response()->json($e, 400);
     }
@@ -102,7 +103,7 @@ class AdminService extends AuthService
       $user = User::onlyTrashed()->find($user_id);
       $res = $user->restore();
       if(!$res) {
-        throw new Exception("戻す事が出来ませんでした", 1);
+        throw new Exception("戻す事が出来ませんでした");
       }
       return response()->json('success', 200);
     } catch (\Exception $e) {
@@ -117,7 +118,7 @@ class AdminService extends AuthService
       $user = User::onlyTrashed()->find($user_id);
       $res = $user->forceDelete();
       if(!$res) {
-        throw new Exception("完全に削除する事が出来ませんでした", 1);
+        throw new Exception("完全に削除する事が出来ませんでした");
       }
       return response()->json('success', 200);
     } catch (\Exception $e) {
@@ -150,7 +151,7 @@ class AdminService extends AuthService
       $absence = AbsenceRequest::find($absence_id);
       $absence->request_check = true;
       $absence->save();
-      return response()->json('success', 200);
+      return response()->json('欠勤処理に成功しました', 200);
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }
