@@ -1,8 +1,13 @@
 export default async function(context) {
-  context.$axios.get('/api/user/get');
-  console.log(context);
-
-  // if(!context.store.getters.is_login) {
-  //   context.redirect('/');
-  // }
+  // ログインしていなければ
+  if(!context.store.getters.is_login) {
+    await context.$axios.
+      get('/api/user/get')
+      .then(res => {
+        context.store.commit('userLogin');
+      })
+      .catch(e => {
+        context.redirect('/user/login');
+      })
+  }
 }

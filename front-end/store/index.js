@@ -21,11 +21,17 @@ export const mutations = {
     state.alert.status = 'danger';
     state.alert.message = message;
   },
-  toggleUserLogin(state) {
-    state.is_user_login = !state.is_user_login;
+  userLogin(state) {
+    state.is_user_login = true;
   },
-  toggleAdminLogin(state) {
-    state.is_admin_login = !state.is_admin_login;
+  userLogout(state) {
+    state.is_user_login = false;
+  },
+  adminLogin(state) {
+    state.is_admin_login = true;
+  },
+  adminLogout(state) {
+    state.is_admin_login = false;
   }
   
 };
