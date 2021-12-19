@@ -26,3 +26,12 @@
   display: none;
 }
 </style>
+
+<script>
+export default {
+  beforeUpdate() {
+    console.log('updatetestttttttttttt');
+    this.$store.commit('alertFlash');
+  }
+}
+</script>

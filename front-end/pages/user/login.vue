@@ -1,19 +1,42 @@
 <template>
   <div class="main">
-    <h1>ユーザーログイン画面</h1>
-    <form @submit.prevent>
-      <input v-model="login_id" type="text">
-      <input v-model="password" type="password">
-      <button type='submit' @click="userLogin">ログイン</button>
-    </form>
+    <v-card width="400px" class="mx-auto mt-5">
+      <v-card-title primary-title>
+        <h1>ユーザーログイン</h1>
+        ユーザーログイン
+      </v-card-title>
+      <v-card-text>
+        <v-form @submit.prevent>
+          <v-text-field
+            name="login_id"
+            label="login_id"
+            v-model="login_id"
+            prepend-icon="mdi-account-circle" 
+          ></v-text-field>
+          <v-text-field
+            name="password"
+            label="password"
+            v-model="password"
+            v-bind:type="showPassword ? 'text' : 'password'"
+            prepend-icon="mdi-lock" 
+            append-icon="mdi-eye-off" 
+            @click:append="showPassword = !showPassword"
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="info" @click="userLogin">ログイン</v-btn>  
+      </v-card-actions>
+    </v-card>
+    <nuxt-link to="/">indexページ</nuxt-link>
   </div>
 </template>
 
 <script>
 export default {
-  middleware: 'auth',
   data(){
     return {
+      showPassword: false,
       login_id: '',
       password: '',
     }
@@ -26,7 +49,8 @@ export default {
         password: this.password,
       })
       .then(res => {
-        this.$store.commit('alertSuccess', 'ログインに成功しました');
+        this.$store.commit('userLogin');
+        this.$store.commit('alert', 'ログインに成功しました', 'success');
       })
       .catch(e => {
         let message = e.response.data;
@@ -38,6 +62,7 @@ export default {
       this.password = '';
     },
   },
+  layout: 'vutify',
 }
 </script>
 
