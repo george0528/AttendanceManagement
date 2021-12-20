@@ -33,10 +33,10 @@
 
 <script>
 import FlashMessage from '../components/FlashMessage.vue'
-  export default {
+export default {
   components: { FlashMessage },
-    data: () => ({
+  data: () => ({
      drawer: null 
-     }),
-  }
+  }),
+}
 </script>

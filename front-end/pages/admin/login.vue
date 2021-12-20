@@ -1,40 +1,81 @@
 <template>
-  <div>
-    <h1>運営ログイン画面</h1>
-    <form @submit.prevent>
-      <input v-model="email" type="text">
-      <input v-model="password" type="password">
-      <button type='submit' @click="adminLogin">ログイン</button>
-    </form>
+  <div class="main">
+    <v-card width="400px" class="mx-auto mt-5">
+      <v-card-title primary-title>
+        管理者  ログイン
+      </v-card-title>
+      <v-card-text>
+        <v-form @submit.prevent>
+          <v-text-field
+            name="email"
+            label="email"
+            v-model="email"
+            prepend-icon="mdi-account-circle" 
+          ></v-text-field>
+          <v-text-field
+            name="password"
+            label="password"
+            v-model="password"
+            v-bind:type="showPassword ? 'text' : 'password'"
+            prepend-icon="mdi-lock" 
+            append-icon="mdi-eye-off" 
+            @click:append="showPassword = !showPassword"
+          ></v-text-field>
+        </v-form>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="info" @click="userLogin">ログイン</v-btn>  
+      </v-card-actions>
+    </v-card>
+    <nuxt-link to="/">indexページ</nuxt-link>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data(){
     return {
-      email: '',
-      password: ''
+      showPassword: false,
+      login_id: '',
+      password: '',
     }
   },
   methods: {
-    async adminLogin() {
+    async userLogin() {
+      let message = '';
+      let type = '';
+
+      // api
       await this.$axios.post('/api/admin/login', {
-        email: this.email,
-        password: this.password
+        login_id: this.login_id,
+        password: this.password,
       })
       .then(res => {
-        this.$store.commit('alertSuccess', 'ログインに成功しました');
+        this.$store.commit('adminLogin');
+        message = 'ログインしました';
+        type = 'success';
       })
       .catch(e => {
-        let message = e.response.data;
-        this.$store.commit('alertFail', message);
-      })
+        message = e.response.data;
+        type = 'error'; 
+      });
+
+      // flashメッセージ
+      this.$store.dispatch(
+        'flashMessage/showMessage',
+        {
+          message: message,
+          type: type,
+          status: true,
+        }
+      );
 
       // inputを空白にする
-      this.email = '';
+      this.login_id = '';
       this.password = '';
-    }
-  }
+    },
+  },
+  layout: 'vutify',
 }
 </script>
+
