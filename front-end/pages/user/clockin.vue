@@ -18,8 +18,28 @@
 export default {
   middleware: 'user_auth',
   methods: {
-    clockIn() {
+    async clockIn() {
+      let message = '';
+      let type = '';
 
+      await this.$axios.post('/api/user/clockin')
+      .then(res => {
+        type = 'success';
+        message = `${res}に出勤しました`
+      })
+      .catch(e => {
+        type = 'error';
+        message = e.response.data;
+      })
+
+      this.$store.dispatch(
+        'flashMessage/showMessage',
+        {
+          type: type,
+          message: message,
+          status: true,
+        }
+      )
     }
   },
   computed: {
