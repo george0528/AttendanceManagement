@@ -36,7 +36,7 @@ export default {
   data(){
     return {
       showPassword: false,
-      login_id: '',
+      email: '',
       password: '',
     }
   },
@@ -47,7 +47,7 @@ export default {
 
       // api
       await this.$axios.post('/api/admin/login', {
-        login_id: this.login_id,
+        email: this.email,
         password: this.password,
       })
       .then(res => {
@@ -71,7 +71,7 @@ export default {
       );
 
       // inputを空白にする
-      this.login_id = '';
+      this.email = '';
       this.password = '';
     },
   },

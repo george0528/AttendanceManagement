@@ -29,6 +29,6 @@ export const actions = {
     commit("setStatus", status)
     setTimeout(() => {
       commit("setStatus", !status)
-    }, 1000)
+    }, 2000)
   },
 }

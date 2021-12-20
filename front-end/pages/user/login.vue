@@ -51,7 +51,7 @@ export default {
         password: this.password,
       })
       .then(res => {
-        this.$store.commit('userLogin');
+        this.$store.commit('user/login');
         message = 'ログインしました';
         type = 'success';
       })

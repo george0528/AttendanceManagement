@@ -36,7 +36,7 @@ import FlashMessage from '../components/FlashMessage.vue'
 export default {
   components: { FlashMessage },
   data: () => ({
-     drawer: null 
+     drawer: false
   }),
 }
 </script>
