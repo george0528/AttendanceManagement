@@ -1,3 +1,4 @@
+// state
 export const state = () => ({
   count: 1,
   alert: {
@@ -9,6 +10,7 @@ export const state = () => ({
   is_admin_login: false,
 });
 
+// mutations
 export const mutations = {
   addCount(state) {
     state.count += 1;
@@ -43,6 +45,7 @@ export const mutations = {
   
 };
 
+// actions
 export const actions = {
   timerCount({ commit }) {
     setTimeout(function() {
@@ -51,10 +54,8 @@ export const actions = {
   }
 };
 
+// getters
 export const getters = {
-  message(state) {
-    return state.alert.message;
-  },
   auth(state) {
     return state.is_login;
   }

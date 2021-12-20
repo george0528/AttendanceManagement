@@ -2,7 +2,6 @@
   <div class="main">
     <v-card width="400px" class="mx-auto mt-5">
       <v-card-title primary-title>
-        <h1>ユーザーログイン</h1>
         ユーザーログイン
       </v-card-title>
       <v-card-text>
@@ -43,6 +42,14 @@ export default {
   },
   methods: {
     async userLogin() {
+      this.$store.dispatch(
+        'flashMessage/showMessage',
+        {
+          message: 'ログインしました',
+          type: 'success',
+          status: true,
+        }
+      );
       // api
       await this.$axios.post('/api/user/login', {
         login_id: this.login_id,
@@ -54,7 +61,7 @@ export default {
       })
       .catch(e => {
         let message = e.response.data;
-        this.$store.commit('alertFail', message);
+        this.$store.commit('alert', message, 'danger  ');
       });
 
       // inputを空白にする
