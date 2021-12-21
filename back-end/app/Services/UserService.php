@@ -16,6 +16,8 @@ class UserService extends AuthService
   public function getUser()
   {
     if(Auth::check()) {
+      $user = Auth::user();
+      $user['is_attendance'] = $user->is_attendance();
       return response()->json(Auth::user(), 200);
     }
 
