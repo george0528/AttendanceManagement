@@ -2,14 +2,14 @@
   <div>
     <v-card>
       <v-card-title primary-title>
-        出勤
+        退勤
       </v-card-title>
       <v-card-text>
-        {{name}}さんで出勤します
+        {{name}}さんで退勤します
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="clockIn" color="info">出勤</v-btn>
-        <nuxt-link to="/user/clockout">退勤画面へ</nuxt-link>
+        <v-btn @click="clockOut" color="info">退勤</v-btn>
+        <nuxt-link to="/user/clockin">出勤画面へ</nuxt-link>
       </v-card-actions>
       <nuxt-link to="/">index</nuxt-link>
     </v-card>
@@ -20,14 +20,14 @@
 export default {
   middleware: 'user_auth',
   methods: {
-    async clockIn() {
+    async clockOut() {
       let message = '';
       let type = '';
 
-      await this.$axios.post('/api/user/clockin')
+      await this.$axios.post('/api/user/clockout')
       .then(res => {
         type = 'success';
-        message = `${res.data.start_time}に出勤しました`
+        message = `${res.data.end_time}に退勤しました`
       })
       .catch(e => {
         type = 'error';
