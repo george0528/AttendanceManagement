@@ -5,10 +5,9 @@ export const state = () => ({
 });
 
 // mutations
-
 export const mutations = {
   login(state) {
-    state.is_login = false;
+    state.is_login = true;
   },
   logout(state) {
     state.is_login = false;
@@ -20,6 +19,6 @@ export const mutations = {
 // getters
 export const getters = {
   isLogin(state) {
-    return state.is_login = false
+    return state.is_login;
   }
 }
