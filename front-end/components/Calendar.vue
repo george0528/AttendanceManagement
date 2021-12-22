@@ -16,10 +16,13 @@
       <v-calendar
         ref="calendar"
         v-model="value"
+        event-start="start_time"
+        event-end="end_time"
         :events="events"
         :event-color="getEventColor"
         @change="getEvents"
         locale="ja-jp"
+        type="week"
         :day-format="(timestamp) => new Date(timestamp.date).getDate()"
         :month-format="(timestamp) => (new Date(timestamp.date).getMonth() + 1) + ' /'"
       ></v-calendar>
@@ -32,21 +35,21 @@ import moment from 'moment';
 
 export default {
   data: () => ({
-    events: [],
     value: moment().format('yyyy-MM-DD'),  // 現在日時
   }),
+  props: ['events'],
   methods: {
     getEvents() {
-      const events = [
-        {
-          name: '会議',
-          start: new Date('2021-12-03T01:00:00'), // 開始時刻
-          end: new Date('2021-12-03T02:00:00'), // 終了時刻
-          color: 'blue',
-          timed: true, // 終日ならfalse
-        },
-      ];
-      this.events = events;
+      // const events = [
+      //   {
+      //     name: '会議',
+      //     start: new Date('2021-12-03T01:00:00'), // 開始時刻
+      //     end: new Date('2021-12-03T02:00:00'), // 終了時刻
+      //     color: 'blue',
+      //     timed: true, // 終日ならfalse
+      //   },
+      // ];
+      // this.events = events;
     },
     getEventColor(event) {
       return event.color;
