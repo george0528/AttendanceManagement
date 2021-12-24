@@ -1,7 +1,6 @@
 <template>
   <div>
     <Calendar :events="events"/>
-    <!-- <Calendar /> -->
   </div>
 </template>
 
@@ -13,24 +12,12 @@ export default {
     }
   },
   methods: {
-    async getScadule() {
-      await this.$axios.get('/api/user/history')
-      .then(res => {
-        this.events = res.data;
-        console.log(res);
-      })
-      .catch(e => {
-        console.log(e.response.data);
-        this.$store.dispatch('flashMessage/showMessage', {
-          message: '就業履歴の取得に失敗しました',
-          type: 'error',
-          status: true,
-        })
-      })
+    async getHistory() {
+      this.events = await this.$getDates(this, '/api/user/history');
     }
   },
   mounted() {
-    this.getScadule();
+    this.getHistory();
   }
 }
 </script>
