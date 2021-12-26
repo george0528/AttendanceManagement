@@ -242,13 +242,8 @@ class AdminTest extends TestCase
     $res->assertOk();
     
     $json = $res->json();
-    $request_dates = array_column($json, 'shift_request_dates');
-    $request_dates_count = 0;
-    for ($i=0; $i < count($request_dates); $i++) { 
-      $request_dates_count += count($request_dates[$i]);
-    }
+
     $this->assertEquals(count($json), ShiftRequest::count());
-    $this->assertEquals($request_dates_count, ShiftRequestDate::count());
   }
 
   // 欠勤申請取得
