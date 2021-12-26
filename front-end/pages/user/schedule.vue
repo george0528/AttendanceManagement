@@ -13,15 +13,15 @@
               name="start_time"
               label="出勤時間"
               type="datetime-local"
-              :value="start_time"
-              :min="now"
+              v-model="start_time"
+              :min="min"
             ></v-text-field>
             <v-text-field
               name="end_time"
               label="退勤時間"
               type="datetime-local"
-              :value="end_time"
-              :min="now"
+              v-model="end_time"
+              :min="min"
             ></v-text-field>
           </v-card-text>
           <v-card-actions>
@@ -36,14 +36,16 @@
 
 
 <script>
+import moment from "moment";
+let tomorrow = moment(new Date()).add(1, 'days').format('YYYY-MM-DDTHH:MM');
 export default {
   data() {
     return {
       events: [],
       dialog: true,
       schedules: [],
-      start_time: '',
-      end_time: '',
+      start_time: tomorrow,
+      end_time: tomorrow,
       disable: false,
     }
   },
@@ -58,9 +60,10 @@ export default {
     },
     async addSchedule() {
       this.disable = true;
+      this.schedules = [];
       this.schedules.push({
-        start_time: this.start_time,
-        end_time: this.end_time,
+        start_time: moment(this.start_time).format('YYYY-MM-DD HH:MM'),
+        end_time: moment(this.end_time).format('YYYY-MM-DD HH:MM'),
       })
       
       let message = '';
@@ -89,9 +92,9 @@ export default {
     this.getSchedule();
   },
   computed: {
-    now() {
-      var now = new Date().toLocaleString("ja");
-      return now;
+    min() {
+      var min = tomorrow;
+      return min;
     },
   }
 }

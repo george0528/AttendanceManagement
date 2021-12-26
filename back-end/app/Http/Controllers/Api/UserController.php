@@ -67,8 +67,8 @@ class UserController extends Controller
   {
     $val = Validator::make($request->all(), [
       'schedules' => ['required', 'array'],
-      'schedules.*.start_time' => ['required', 'date_format:Y-m-d H:i:s', 'after:tomorrow'],
-      'schedules.*.end_time' => ['required', 'date_format:Y-m-d H:i:s', 'after:schedules.*.start_time', ],
+      'schedules.*.start_time' => ['required', 'date_format:Y-m-d H:i', 'after:tomorrow'],
+      'schedules.*.end_time' => ['required', 'date_format:Y-m-d H:i', 'after:schedules.*.start_time', ],
     ]);
     
     if($val->fails()) {
