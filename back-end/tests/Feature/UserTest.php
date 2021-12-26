@@ -12,7 +12,7 @@ use App\Services\AuthService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Carbon\Carbon;
+use App\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -323,7 +323,7 @@ class UserTest extends TestCase
     $end_time->addHour();
     $schedule_data = [
       'start_time' =>  $start_time->__toString(),
-      'end_time' => $end_time->__toString(),
+      'end_time' =>  $end_time->__toString(),
     ];
     return $schedule_data;
   }
