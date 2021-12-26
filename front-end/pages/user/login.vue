@@ -24,7 +24,7 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="info" @click="userLogin">ログイン</v-btn>  
+        <v-btn color="info" @click="userLogin" :disabled="disabled">ログイン</v-btn>  
       </v-card-actions>
     </v-card>
     <nuxt-link to="/">indexページ</nuxt-link>
@@ -38,10 +38,12 @@ export default {
       showPassword: false,
       login_id: '',
       password: '',
+      disabled: false,
     }
   },
   methods: {
     async userLogin() {
+      this.disabled = true;
       let message = '';
       let type = '';
 
@@ -73,6 +75,7 @@ export default {
       // inputを空白にする
       this.login_id = '';
       this.password = '';
+      this.disabled = false;
     },
   },
   layout: 'vutify',

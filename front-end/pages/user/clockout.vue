@@ -8,7 +8,7 @@
         {{name}}さんで退勤します
       </v-card-text>
       <v-card-actions>
-        <v-btn @click="clockOut" color="info">退勤</v-btn>
+        <v-btn @click="clockOut" color="info" :disabled="disabled">退勤</v-btn>
         <nuxt-link to="/user/clockin">出勤画面へ</nuxt-link>
       </v-card-actions>
       <nuxt-link to="/">index</nuxt-link>
@@ -18,9 +18,15 @@
 
 <script>
 export default {
+  data() {
+    return {
+      disabled: false,
+    }
+  },
   middleware: 'user_auth',
   methods: {
     async clockOut() {
+      this.disabled = true;
       let message = '';
       let type = '';
 
@@ -42,6 +48,8 @@ export default {
           status: true,
         }
       )
+
+      this.disabled = false
     }
   },
   computed: {
