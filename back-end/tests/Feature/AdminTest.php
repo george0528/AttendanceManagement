@@ -251,6 +251,25 @@ class AdminTest extends TestCase
     $this->assertEquals(count($json), ShiftRequest::count());
   }
 
+  // 特定のIDのシフト申請を取得
+  public function test_shift_request_id_get()
+  {
+    ShiftRequest::factory()->has(ShiftRequestDate::factory()->count(3), 'shift_request_dates')->create();
+    $shift_request = ShiftRequest::first();
+    $this->url = $this->url."/shift/$shift_request->id";
+
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertOk();
+  }
+
+  public function test_shift_request_id_get_fail()
+  {
+    $this->url = $this->url."/shift/10000000000";
+
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertStatus(400);
+  }
+
   // 欠勤申請取得
   public function test_absence_request_get()
   {

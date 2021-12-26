@@ -154,7 +154,7 @@ class AdminService extends AuthService
       $shift_request_dates = ShiftRequest::with('shift_request_dates')->find($request_id);
 
       if(!$shift_request_dates) {
-        throw new Exception("そのIDのシフトリクエストはありません");
+        throw new \Exception("そのIDのシフトリクエストはありません");
       }
 
       return response()->json($shift_request_dates, 200);
