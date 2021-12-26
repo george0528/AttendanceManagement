@@ -56,7 +56,7 @@ export default {
   methods: {
     async getSchedule() {
       this.disable = true;
-      this.events = await this.$getDates(this, '/api/user/schedule');
+      this.events = await this.$getDates(this, '/api/user/schedule', 'red','シフトの取得に失敗しました');
       this.disable = false;
     },
     dialogOpen() {

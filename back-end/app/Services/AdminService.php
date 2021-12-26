@@ -140,6 +140,7 @@ class AdminService extends AuthService
   {
     try {
       $shift_requests = ShiftRequest::with('shift_request_dates')->get();
+      $shift_requests = ShiftRequest::all();
       return response()->json($shift_requests, 200);
     } catch (\Exception $e) {
       return response()->json($e, 400);

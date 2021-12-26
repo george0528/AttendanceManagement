@@ -72,6 +72,7 @@ Route::prefix('/admin')->group(function() {
       Route::delete('/delete', [AdminController::class, 'forceDeleteUser']);
     });
     Route::get('/shift', [AdminController::class, 'getShift']);
+    Route::get('/shift/date/{id}', [AdminController::class, 'getShiftDate']);
     Route::post('/schedule', [AdminController::class, 'addSchedule']);
     Route::get('/absence', [AdminController::class, 'getAbsence']);
     Route::put('/absence', [AdminController::class, 'putAbsence']);
