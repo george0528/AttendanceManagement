@@ -26,6 +26,10 @@
         @change="getEvents"
         locale="ja-jp"
         :type="type"
+        :event-more="more_flag"
+        @click:day="clickDay"
+        @click:more="clickMore"
+        @click:event="clickEvent"
         :day-format="(timestamp) => new Date(timestamp.date).getDate()"
         :month-format="(timestamp) => (new Date(timestamp.date).getMonth() + 1) + ' /'"
       ></v-calendar>
@@ -40,6 +44,7 @@ export default {
   data: () => ({
     value: moment().format('yyyy-MM-DD'),  // 現在日時
     type_num: 1,
+    more_flag: true,
   }),
   props: ['events'],
   methods: {
@@ -66,7 +71,16 @@ export default {
       if(this.type_num == 4) {
         this.type_num = 1
       }
-    }
+    },
+    clickDay(day) {
+      // console.log(day);
+    },
+    clickMore() {
+      this.more_flag = !this.more_flag;
+    },
+    clickEvent(event) {
+      
+    },
   },
   computed: {
     title() {

@@ -1,6 +1,7 @@
 // 自作関数
 
 export default ({  }, inject) => {
+  // カレンダーのデータを取得
   const getDates = async ($this, url, color = 'red') => {
     return await $this.$axios.get(url)
     .then(res => {
@@ -14,7 +15,7 @@ export default ({  }, inject) => {
     })
     .catch(e => {
       console.log(e);
-      this.$store.dispatch('flashMessage/showMessage', {
+      $this.$store.dispatch('flashMessage/showMessage', {
         message: '就業履歴の取得に失敗しました',
         type: 'error',
         status: true,
