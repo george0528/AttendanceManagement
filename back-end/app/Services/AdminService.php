@@ -147,6 +147,22 @@ class AdminService extends AuthService
     }
   }
 
+  // 特定のIDのシフトリクエストを取得
+  public function getShiftId($request_id)
+  {
+    try {
+      $shift_request_dates = ShiftRequest::with('shift_request_dates')->find($request_id);
+
+      if(!$shift_request_dates) {
+        throw new Exception("そのIDのシフトリクエストはありません");
+      }
+
+      return response()->json($shift_request_dates, 200);
+    } catch (\Exception $e) {
+      return response()->json($e, 400);
+    }
+  }
+
   // 欠勤申請取得
   public function getAbsence()
   {

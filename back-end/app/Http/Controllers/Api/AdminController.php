@@ -145,6 +145,12 @@ class AdminController extends Controller
 		return $this->service->getShift();
 	}
 
+	// 特定のIDのシフトリクエストを取得
+	public function getShiftId($request_id)
+	{
+		return $this->service->getShiftId($request_id);
+	}
+
 	// スケジュールを追加
 	public function addSchedule()
 	{
