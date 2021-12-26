@@ -7,6 +7,9 @@
      <v-btn outlined small class="ma-4" @click="changeShowType">
        表示変更
      </v-btn>
+     <v-btn v-if="btn.flag" color="info" outlined small class="ma-4" @click="emitEvent">
+      {{ btn.text }}
+     </v-btn>
       <v-btn icon @click="$refs.calendar.prev()">
         <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
@@ -46,7 +49,7 @@ export default {
     type_num: 1,
     more_flag: true,
   }),
-  props: ['events'],
+  props: ['events', 'btn'],
   methods: {
     getEvents() {
       // const events = [
@@ -81,6 +84,9 @@ export default {
     clickEvent(event) {
       
     },
+    emitEvent() {
+      this.$emit('btnClickEmit');
+    }
   },
   computed: {
     title() {

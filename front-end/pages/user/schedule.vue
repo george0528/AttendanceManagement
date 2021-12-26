@@ -30,7 +30,7 @@
         </v-card>
       </div>
     </v-dialog>
-    <Calendar :events="events" :btn_flag="true"/>
+    <Calendar :events="events" :btn="btn" @btnClickEmit="dialogOpen"/>
   </div>
 </template>
 
@@ -46,6 +46,10 @@ export default {
       schedules: [],
       start_time: tomorrow,
       end_time: tomorrow,
+      btn: {
+        flag: true,
+        text: '申請を追加',
+      },
       disable: false,
     }
   },
