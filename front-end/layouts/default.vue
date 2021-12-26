@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer
       v-model="drawer"
+      :disable-route-watcher="true"
       app
     >
       <!--  -->
@@ -36,7 +37,7 @@ import FlashMessage from '../components/FlashMessage.vue'
 export default {
   components: { FlashMessage },
   data: () => ({
-     drawer: false
+    drawer: false
   }),
 }
 </script>

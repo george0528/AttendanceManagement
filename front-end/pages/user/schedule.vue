@@ -42,7 +42,7 @@ export default {
   data() {
     return {
       events: [],
-      dialog: true,
+      dialog: false,
       schedules: [],
       start_time: tomorrow,
       end_time: tomorrow,
