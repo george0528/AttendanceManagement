@@ -73,8 +73,8 @@ Route::prefix('/admin')->group(function() {
     });
     Route::get('/shift', [AdminController::class, 'getShift']);
     Route::get('/shift/{id}', [AdminController::class, 'getShiftId']);
-    Route::get('/shift/date/{id}', [AdminController::class, 'getShiftDate']);
-    Route::post('/schedule', [AdminController::class, 'addSchedule']);
+    // Route::get('/shift/date/{id}', [AdminController::class, 'getShiftDate']); // 未実装
+    Route::post('/schedule', [AdminController::class, 'addSchedule']); // 未実装
     Route::get('/absence', [AdminController::class, 'getAbsence']);
     Route::put('/absence', [AdminController::class, 'putAbsence']);
     Route::get('/history', [AdminController::class, 'getHistory']);

@@ -152,9 +152,17 @@ class AdminController extends Controller
 	}
 
 	// スケジュールを追加
-	public function addSchedule()
+	public function addSchedule(Request $request)
 	{
-		return $this->service->addSchedule();
+		$val = Validator::make($request->all(), [
+			'shift_request_id' => ['required', Rule::exists('shift_requests', 'id')->whereNotNull('deleted_at')],
+		]);
+
+		if($val->fails()) {
+			return response()->json('シフト申請をスケジュールに追加することが出来ませんでした', 400);
+		}
+
+		return $this->service->addSchedule($val->validated()['shift_request_id']);
 	}
 
 	// 欠勤申請取得

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AbsenceRequest;
 use App\Models\History;
 use App\Models\ShiftRequest;
+use App\Models\ShiftRequestDate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -160,6 +161,31 @@ class AdminService extends AuthService
       return response()->json($shift_request_dates, 200);
     } catch (\Exception $e) {
       return response()->json($e, 400);
+    }
+  }
+
+  // スケジュールを追加
+  public function addSchedule($request_id)
+  {
+    DB::beginTransaction();
+    try {
+
+      $shift_request_dates = ShiftRequestDate::where('request_id', $request_id)->get();
+      $shift_request = ShiftRequest::find($request_id);
+      $user_id = $shift_request->user_id;
+      $res = $shift_request->delete();
+      foreach ($shift_request_dates as $index => $date) {
+        $shift_request_dates[$index]['user_id'] = $user_id;
+      }
+      DB::table('schedules')->insert($shift_request_dates);
+      if($res != 1) {
+        throw new \Exception('失敗しました');
+      }
+      DB::commit();
+      return response()->json('スケジュールの追加に成功しました');
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return response()->json('スケジュールの追加に失敗しました');
     }
   }
 
