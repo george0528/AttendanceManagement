@@ -96,7 +96,6 @@ class UserController extends Controller
     if(Auth::check()) {
       $user = Auth::user();
       $histories = $user->getHistories();
-      info(print_r($histories, true));
       $data = History::getTimes($histories);
       return response()->json($data, 200);
     }

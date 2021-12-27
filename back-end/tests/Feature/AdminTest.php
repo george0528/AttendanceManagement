@@ -246,7 +246,6 @@ class AdminTest extends TestCase
     $user_id = $json[0]['user_id'];
     $user = User::find($user_id);
 
-    info($json[0]['user']);
     $this->assertEquals($json[0]['user']['name'], $user->name);
     $this->assertEquals(count($json), ShiftRequest::count());
   }
@@ -268,6 +267,28 @@ class AdminTest extends TestCase
 
     $res = $this->actingAs($this->admin, 'admin')->get($this->url);
     $res->assertStatus(400);
+  }
+
+  // スケジュールの追加
+  public function test_add_schedule()
+  {
+    $this->url = $this->url.'/schedule';
+    $data = ShiftRequest::factory()->has(ShiftRequestDate::factory()->count(3), 'shift_request_dates')->create();
+
+    $shift_request_count = ShiftRequest::count();
+    $shift_request_count--;
+
+    $schedule_count = Schedule::count();
+    $schedule_count += 3;
+
+    $res = $this->actingAs($this->admin, 'admin')->post($this->url, [
+      'shift_request_id' => $data->id,
+    ]);
+    info($res->json());
+    $res->assertOk();
+
+    $this->assertEquals($shift_request_count, ShiftRequest::count());
+    $this->assertEquals($schedule_count, Schedule::count());
   }
 
   // 欠勤申請取得

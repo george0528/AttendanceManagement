@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ShiftRequest;
 use Illuminate\Http\Request;
 use App\Services\AdminService;
 use App\Services\AuthService;
@@ -155,7 +156,7 @@ class AdminController extends Controller
 	public function addSchedule(Request $request)
 	{
 		$val = Validator::make($request->all(), [
-			'shift_request_id' => ['required', Rule::exists('shift_requests', 'id')->whereNotNull('deleted_at')],
+			'shift_request_id' => ['required', Rule::exists('shift_requests', 'id')->whereNull('deleted_at')],
 		]);
 
 		if($val->fails()) {

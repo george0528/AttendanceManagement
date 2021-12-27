@@ -8,6 +8,7 @@ use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -169,23 +170,24 @@ class AdminService extends AuthService
   {
     DB::beginTransaction();
     try {
-
       $shift_request_dates = ShiftRequestDate::where('request_id', $request_id)->get();
       $shift_request = ShiftRequest::find($request_id);
       $user_id = $shift_request->user_id;
       $res = $shift_request->delete();
       foreach ($shift_request_dates as $index => $date) {
         $shift_request_dates[$index]['user_id'] = $user_id;
+        unset($shift_request_dates[$index]['id']);
+        unset($shift_request_dates[$index]['request_id']);
       }
-      DB::table('schedules')->insert($shift_request_dates);
+      DB::table('schedules')->insert($shift_request_dates->toArray());
       if($res != 1) {
         throw new \Exception('失敗しました');
       }
       DB::commit();
-      return response()->json('スケジュールの追加に成功しました');
+      return response()->json('スケジュールの追加に成功しました', 200);
     } catch (\Exception $e) {
       DB::rollBack();
-      return response()->json('スケジュールの追加に失敗しました');
+      return response()->json('スケジュールの追加に失敗しました', 400);
     }
   }
 
