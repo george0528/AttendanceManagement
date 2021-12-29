@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Calendar :events="events"/>
+    <Calendar :events="events" :btn="btn"/>
   </div>
 </template>
 
@@ -9,6 +9,10 @@ export default {
   data() {
     return {
       events: [],
+      btn: {
+        flag: false,
+        text: ''
+      }
     }
   },
   methods: {
