@@ -73,15 +73,13 @@ export default {
     async restoreUser(user) {
       this.disabled = true;
       await this.$axios.put(this.api_url, {
-        data: {
-          user_id: user.id
-        }
+        user_id: user.id
       })
       .then(res => {
-        console.log(res);
+        const index = this.items.indexOf(item);
+        this.delete_users.splice(index, 1);
       })
       .catch(e => {
-        console.log(e);
         this.$store.dispatch('flashMessage/showErrorMessage', 'ユーザーの復元に失敗しました');
       })
 
