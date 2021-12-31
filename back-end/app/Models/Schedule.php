@@ -16,4 +16,9 @@ class Schedule extends Model
     {
         return $this->hasMany(AbsenceRequest::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

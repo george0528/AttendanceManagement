@@ -194,7 +194,7 @@ class AdminService extends AuthService
   // 欠勤申請取得
   public function getAbsence()
   {
-    $absence_requests = AbsenceRequest::with('schedule')->get();
+    $absence_requests = AbsenceRequest::with('schedule.user')->get();
     return response()->json($absence_requests, 200);
   }
 
