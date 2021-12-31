@@ -198,7 +198,7 @@ class UserTest extends TestCase
     $response->assertOk();
 
     $json = $response->json();
-    $this->assertEquals(Schedule::count(), count($json));
+    $this->assertEquals(Schedule::where('user_Id', $this->user->id)->count(), count($json));
   }
 
   // 就業履歴取得
