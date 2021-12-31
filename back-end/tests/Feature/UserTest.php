@@ -48,7 +48,7 @@ class UserTest extends TestCase
   {
     $this->assertGuest('user');
 
-    $this->url = $this->url.'/login';
+    $this->url .= '/login';
     $response = $this->post($this->url, [
       'login_id' => $this->user->login_id,
       'password' => 'password',
@@ -61,7 +61,7 @@ class UserTest extends TestCase
   {
     $this->assertGuest('user');
 
-    $this->url = $this->url.'/login';
+    $this->url .= '/login';
     
     $response = $this->postJson($this->url, []);
     $response->assertStatus(400);
@@ -109,7 +109,7 @@ class UserTest extends TestCase
   // ログアウト
   public function test_logout_success()
   {
-    $this->url = $this->url.'/logout';
+    $this->url .= '/logout';
 
     $this->assertGuest('user');
     Auth::login($this->user);
@@ -121,7 +121,7 @@ class UserTest extends TestCase
 
   public function test_logout_failed()
   {
-    $this->url = $this->url.'/logout';
+    $this->url .= '/logout';
 
     $this->assertGuest('user');
     $response = $this->postJson($this->url);
@@ -132,7 +132,7 @@ class UserTest extends TestCase
   // 出勤
   public function test_clockIn_success()
   {
-    $this->url = $this->url.'/clockin';
+    $this->url .= '/clockin';
 
     $count = Now::count();
     $in_count = $count + 1;
@@ -143,7 +143,7 @@ class UserTest extends TestCase
 
   public function test_clockIn_failed()
   {
-    $this->url = $this->url.'/clockin';
+    $this->url .= '/clockin';
 
     Now::create(['user_id' => $this->user->id, 'start_time' => Carbon::now()]);
     $count = Now::count();
@@ -156,7 +156,7 @@ class UserTest extends TestCase
   // 退勤
   public function test_clockOut_success()
   {
-    $this->url = $this->url.'/clockout';
+    $this->url .= '/clockout';
     
     $time = Carbon::now();
     $time->subHour(5);
@@ -177,7 +177,7 @@ class UserTest extends TestCase
 
   public function test_clockOut_failed()
   {
-    $this->url = $this->url.'/clockout';
+    $this->url .= '/clockout';
 
     $history_count = History::count();
 
@@ -190,7 +190,7 @@ class UserTest extends TestCase
   // スケジュール取得
   public function test_schedule_success()
   {
-    $this->url = $this->url.'/schedule';
+    $this->url .= '/schedule';
 
     Schedule::factory(3)->create(['user_id' => $this->user->id]);
 
@@ -204,7 +204,7 @@ class UserTest extends TestCase
   // 就業履歴取得
   public function test_history_success()
   {
-    $this->url = $this->url.'/history';
+    $this->url .= '/history';
 
     History::factory(3)->create(['user_id' => $this->user->id]);
 
@@ -220,7 +220,7 @@ class UserTest extends TestCase
   // 就業時間の取得
   public function test_history_time_success()
   {
-    $this->url = $this->url.'/history/time';
+    $this->url .= '/history/time';
 
     History::factory(3)->create(['user_id' => $this->user->id]);
 
@@ -234,7 +234,7 @@ class UserTest extends TestCase
   // 欠勤申請
   public function test_absence_success()
   {
-    $this->url = $this->url.'/absence';
+    $this->url .= '/absence';
 
     $schedule = Schedule::factory()->create(['user_id' => $this->user->id]);
     
@@ -251,7 +251,7 @@ class UserTest extends TestCase
 
   public function test_absence_comment_success()
   {
-    $this->url = $this->url.'/absence';
+    $this->url .= '/absence';
 
     $schedule = Schedule::factory()->create(['user_id' => $this->user->id]);
 
@@ -273,7 +273,7 @@ class UserTest extends TestCase
   // シフト申請
   public function test_shift_success()
   {
-    $this->url = $this->url.'/schedule';
+    $this->url .= '/schedule';
 
     $shift_request_count = ShiftRequest::count();
     $shift_request_count++;
@@ -292,7 +292,7 @@ class UserTest extends TestCase
   
   public function test_shift_failed()
   {
-    $this->url = $this->url.'/schedule';
+    $this->url .= '/schedule';
 
     $shift_request_count = ShiftRequest::count();
 

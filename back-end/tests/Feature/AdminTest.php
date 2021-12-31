@@ -45,7 +45,7 @@ class AdminTest extends TestCase
   // ログイン
   public function test_login_success()
   {
-    $this->url = $this->url.'/login';
+    $this->url .= '/login';
 
     $data = [
       'email' => $this->admin->email,
@@ -60,7 +60,7 @@ class AdminTest extends TestCase
 
   public function test_login_failed()
   {
-    $this->url = $this->url.'/login';
+    $this->url .= '/login';
 
     $data = [
       'email' => '',
@@ -105,7 +105,7 @@ class AdminTest extends TestCase
   // ログアウト
   public function test_logout_success()
   {
-    $this->url = $this->url.'/logout';
+    $this->url .= '/logout';
 
     Auth::guard('admin')->login($this->admin);
     $this->assertAuthenticatedAs($this->admin, 'admin');
@@ -116,7 +116,7 @@ class AdminTest extends TestCase
 
   public function test_logout_failed()
   {
-    $this->url = $this->url.'/logout';
+    $this->url .= '/logout';
 
     $this->assertGuest('admin');
     $res = $this->postJson($this->url);
@@ -127,7 +127,7 @@ class AdminTest extends TestCase
   // user取得
   public function test_user_get()
   {
-    $this->url = $this->url.'/user';
+    $this->url .= '/user';
 
     $user_count = User::count();
     $res = $this->actingAs($this->admin, 'admin')->getJson($this->url);
@@ -140,7 +140,7 @@ class AdminTest extends TestCase
   // user追加
   public function test_user_add()
   {
-    $this->url = $this->url.'/user';
+    $this->url .= '/user';
 
     $user_count = User::count();
     $user_count++;
@@ -158,7 +158,7 @@ class AdminTest extends TestCase
   // user編集
   public function test_user_update_success()
   {
-    $this->url = $this->url.'/user';
+    $this->url .= '/user';
 
     $user = User::factory()->create();
     $data = [
@@ -177,7 +177,7 @@ class AdminTest extends TestCase
   // user削除
   public function test_user_delete()
   {
-    $this->url = $this->url.'/user';
+    $this->url .= '/user';
 
     $user = User::factory()->create();
 
@@ -196,7 +196,7 @@ class AdminTest extends TestCase
   // 論理削除のuserを取得
   public function test_user_softdelete_get()
   {
-    $this->url = $this->url.'/user/delete';
+    $this->url .= '/user/delete';
     
     $user = User::factory()->create();
     $user->delete();
@@ -213,7 +213,7 @@ class AdminTest extends TestCase
   // 論理削除のデータを復元
   public function test_user_softdelete_put()
   {
-    $this->url = $this->url.'/user/delete';
+    $this->url .= '/user/delete';
 
     $user = User::factory()->create();
     $user->delete();
@@ -234,7 +234,7 @@ class AdminTest extends TestCase
   // シフト申請を取得
   public function test_shift_request_get()
   {
-    $this->url = $this->url.'/shift';
+    $this->url .= '/shift';
 
     ShiftRequest::factory()->has(ShiftRequestDate::factory()->count(3), 'shift_request_dates')->create();
 
@@ -256,7 +256,7 @@ class AdminTest extends TestCase
   {
     ShiftRequest::factory()->has(ShiftRequestDate::factory()->count(3), 'shift_request_dates')->create();
     $shift_request = ShiftRequest::first();
-    $this->url = $this->url."/shift/$shift_request->id";
+    $this->url .= "/shift/$shift_request->id";
 
     $res = $this->actingAs($this->admin, 'admin')->get($this->url);
     $res->assertOk();
@@ -264,7 +264,7 @@ class AdminTest extends TestCase
 
   public function test_shift_request_id_get_fail()
   {
-    $this->url = $this->url."/shift/10000000000";
+    $this->url .= "/shift/10000000000";
 
     $res = $this->actingAs($this->admin, 'admin')->get($this->url);
     $res->assertStatus(400);
@@ -285,7 +285,7 @@ class AdminTest extends TestCase
   // スケジュールの追加
   public function test_add_schedule()
   {
-    $this->url = $this->url.'/schedule';
+    $this->url .= '/schedule';
     $data = ShiftRequest::factory()->has(ShiftRequestDate::factory()->count(3), 'shift_request_dates')->create();
 
     $shift_request_count = ShiftRequest::count();
@@ -306,7 +306,7 @@ class AdminTest extends TestCase
   // 欠勤申請取得
   public function test_absence_request_get()
   {
-    $this->url = $this->url.'/absence';
+    $this->url .= '/absence';
 
     Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
 
@@ -319,7 +319,7 @@ class AdminTest extends TestCase
   // 欠勤申請を承諾
   public function test_absence_request_put()
   {
-    $this->url = $this->url.'/absence';
+    $this->url .= '/absence';
 
     $schedule =  Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
     $data = AbsenceRequest::where('schedule_id', $schedule->id)->first();
@@ -331,7 +331,7 @@ class AdminTest extends TestCase
   // 就業履歴の取得
   public function test_hitory_get()
   {
-    $this->url = $this->url.'/history';
+    $this->url .= '/history';
 
     History::factory(5)->create();
 
