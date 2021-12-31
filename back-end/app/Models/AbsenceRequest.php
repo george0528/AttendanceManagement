@@ -12,4 +12,9 @@ class AbsenceRequest extends Model
 
     protected $guarded = ['id'];
     public $timestamps = false;
+
+    public function schedule()
+    {
+        return $this->belongsTo(Schedule::class);
+    }
 }

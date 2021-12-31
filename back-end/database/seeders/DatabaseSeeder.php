@@ -15,5 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(10)->create();
         \App\Models\Admin::factory(3)->create();
+        \App\Models\History::factory(3)->create();
+        \App\Models\Schedule::factory(3)->create();
+        \App\Models\ShiftRequest::factory(3)->create();
+        \App\Models\ShiftRequestDate::factory(3)->create();
+        \App\Models\AbsenceRequest::factory(3)->create();
     }
 }
