@@ -270,6 +270,18 @@ class AdminTest extends TestCase
     $res->assertStatus(400);
   }
 
+  public function test_get_schedule()
+  {
+    $this->url .= '/schedule';
+    Schedule::factory(3)->create();
+
+    $res = $this->actingAs($this->admin, 'admin')->get($this->url);
+    $res->assertOk();
+
+    $json = $res->json();
+    $this->assertEquals(count($json), Schedule::count());
+  }
+
   // スケジュールの追加
   public function test_add_schedule()
   {

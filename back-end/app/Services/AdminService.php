@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AbsenceRequest;
 use App\Models\History;
+use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
 use App\Models\User;
@@ -163,6 +164,13 @@ class AdminService extends AuthService
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }
+  }
+
+  // スケジュールを取得
+  public function getSchedule()
+  {
+    $schedules = Schedule::with('user')->get();
+    return response()->json($schedules, 200);
   }
 
   // スケジュールを追加
