@@ -38,5 +38,13 @@ export const actions = {
     setTimeout(() => {
       commit("setStatus", false)
     }, 2000);
+  },
+  showSuccessMessage({commit}, message) {
+    commit("setMessage", message)
+    commit("setType", "success")
+    commit("setStatus", true)
+    setTimeout(() => {
+      commit("setStatus", false)
+    }, 2000);
   }
 }
