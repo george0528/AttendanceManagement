@@ -76,10 +76,12 @@ export default {
         user_id: user.id
       })
       .then(res => {
-        const index = this.items.indexOf(item);
+        console.log(res);
+        const index = this.delete_users.indexOf(user);
         this.delete_users.splice(index, 1);
       })
       .catch(e => {
+        console.log(e);
         this.$store.dispatch('flashMessage/showErrorMessage', 'ユーザーの復元に失敗しました');
       })
 
