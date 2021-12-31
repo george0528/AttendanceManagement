@@ -8,13 +8,14 @@
       :loading="is_load"
       loading-text="データを取得中です"
     > 
-      <template v-slot:[`item.delete`]="{ item }">
+      <template v-slot:[`item.restore`]="{ item }">
         <v-btn
           small
-          color="error"
-          @click="deleteItem(item)"
+          :disabled="disabled"
+          color="success"
+          @click="restoreUser(item)"
         >
-          delete
+          復元
         </v-btn>
       </template>
     </v-data-table>
@@ -25,6 +26,8 @@
 export default {
   data() {
     return {
+      api_url: '/api/admin/user/delete',
+      disabled: false,
       delete_users: [],
       is_load: false,
       headers: [
@@ -44,15 +47,18 @@ export default {
           text: '年齢',
           value: 'age'
         },
+        {
+          text: '復元',
+          value: 'restore'
+        },
       ],
     }
   },
   methods: {
     async getDeleteUsers() {
       this.is_load = true;
-      await this.$axios.get('/api/admin/user/delete')
+      await this.$axios.get(this.api_url)
       .then(res => {
-        console.log(res);
         this.delete_users = res.data; 
       }) 
       .catch(e => {
@@ -63,6 +69,23 @@ export default {
         });
       })
       this.is_load = false;
+    },
+    async restoreUser(user) {
+      this.disabled = true;
+      await this.$axios.put(this.api_url, {
+        data: {
+          user_id: user.id
+        }
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        console.log(e);
+        this.$store.dispatch('flashMessage/showErrorMessage', 'ユーザーの復元に失敗しました');
+      })
+
+      this.disabled = false;
     }
   },
   mounted() {
