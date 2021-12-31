@@ -243,10 +243,11 @@ class AdminTest extends TestCase
     
     $json = $res->json();
 
-    $user_id = $json[0]['user_id'];
+    $index = array_key_last($json);
+    $user_id = $json[$index]['user_id'];
     $user = User::find($user_id);
 
-    $this->assertEquals($json[0]['user']['name'], $user->name);
+    $this->assertEquals($json[$index]['user']['name'], $user->name);
     $this->assertEquals(count($json), ShiftRequest::count());
   }
 
@@ -284,7 +285,6 @@ class AdminTest extends TestCase
     $res = $this->actingAs($this->admin, 'admin')->post($this->url, [
       'shift_request_id' => $data->id,
     ]);
-    info($res->json());
     $res->assertOk();
 
     $this->assertEquals($shift_request_count, ShiftRequest::count());
