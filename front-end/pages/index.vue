@@ -1,8 +1,8 @@
 <template>
 <div>
+  <v-btn color="success" to="/user">ユーザーメニュー</v-btn>
+  <v-btn color="success" to="/admin">管理者メニュー</v-btn>
   <Tutorial/>
-  <nuxt-link to="/user/clockin">出勤</nuxt-link>
-  <nuxt-link to="/user/login">userlogin画面</nuxt-link>
 </div>
 </template>
 

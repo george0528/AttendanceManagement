@@ -74,7 +74,7 @@ export default {
       item.request_check = !item.request_check;
     },
     clickMore(item) {
-      this.$router.push(`/admin/user/shift/${item.id}`);
+      this.$router.push(`/admin/shift/${item.id}`);
     }
   },
   mounted() {

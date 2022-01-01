@@ -5,7 +5,6 @@
       :items="events"
       class="elevation-1"
       show-select
-      v-model="selected"
       item-key="id"
       :loading="is_load"
       loading-text="データを取得中です"
