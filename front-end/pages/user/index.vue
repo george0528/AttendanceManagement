@@ -10,7 +10,6 @@
         <v-btn color="success" to="/user/clockin">出勤</v-btn>
         <v-btn color="success" to="/user/clockout">退勤</v-btn>
         <v-btn color="success" to="/user/history">就業履歴</v-btn>
-        <v-btn color="success" to="/user/absence">欠勤申請</v-btn>
         <v-btn color="error" @click="linkBack">戻る</v-btn>
       </v-card-actions>
     </v-card>

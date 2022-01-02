@@ -32,6 +32,10 @@ export default {
       .catch(e => {
         this.$store.dispatch('flashMessage/showErrorMessage', 'スケジュールの取得に失敗しました');
       })
+    },
+    clickDay(day) {
+      console.log(day);
+      console.log('aaaaaa');
     }
   },
   mounted() {

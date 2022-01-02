@@ -25,12 +25,43 @@
             ></v-text-field>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="info" @click="addSchedule" :disabled="disable">申請</v-btn>
+            <v-btn color="info" @click="addSchedule" :disabled="is_disabled">申請</v-btn>
           </v-card-actions>
         </v-card>
       </div>
     </v-dialog>
-    <Calendar :events="events" :btn="btn" @btnClickEmit="dialogOpen"/>
+    <v-dialog
+      v-model="event"
+      v-if="event"
+    >
+      <div>
+        <v-card>
+          <v-card-title class="red--text" primary-title>
+            欠勤申請
+          </v-card-title>
+          <v-card-text>
+            <h3>出勤時間</h3>
+            <div>{{ event.start_time }}</div>
+            <h3>退勤時間</h3>
+            <div>{{ event.end_time }}</div>
+            <v-text-field
+              name="id"
+              type="hidden"
+            ></v-text-field>
+            <v-text-field
+              name="commnet"
+              type="textarea"
+              v-model="event.commnet"
+              label="コメント"
+            ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="info" @click="addAbsence" :disabled="is_disabled">欠勤申請</v-btn>
+          </v-card-actions>
+        </v-card>
+      </div>
+    </v-dialog>
+    <Calendar :events="events" :btn="btn" @btnClickEmit="dialogOpen" @clickEvent="openAbsenceForm"/>
   </div>
 </template>
 
@@ -46,24 +77,25 @@ export default {
       schedules: [],
       start_time: tomorrow,
       end_time: tomorrow,
+      event: null,
       btn: {
         flag: true,
         text: '申請を追加',
       },
-      disable: false,
+      is_disabled: false,
     }
   },
   methods: {
     async getSchedule() {
-      this.disable = true;
+      this.is_disabled = true;
       this.events = await this.$getDates(this, '/api/user/schedule', 'red','シフトの取得に失敗しました');
-      this.disable = false;
+      this.is_disabled = false;
     },
     dialogOpen() {
       this.dialog = true;
     },
     async addSchedule() {
-      this.disable = true;
+      this.is_disabled = true;
       this.schedules = [];
       this.schedules.push({
         start_time: moment(this.start_time).format('YYYY-MM-DD HH:MM'),
@@ -89,7 +121,25 @@ export default {
         type: type,
         status: true,
       });
-      this.disable = false;
+      this.is_disabled = false;
+    },
+    openAbsenceForm(event) {
+      this.event = event;
+    },
+    async addAbsence() {
+      this.is_disabled = true;
+      await this.$axios.post('/api/user/absence', {
+        schedule_id: this.event.id,
+        comment: this.event.comment
+      })
+      .then(res => {
+        this.$store.dispatch('flashMessage/showSuccessMessage', '欠勤申請に成功しました');
+      })
+      .catch(e => {
+        this.$store.dispatch('flashMessage/showErrorMessage', '欠勤申請に失敗しました');
+      })
+
+      this.is_disabled = false;
     }
   },
   mounted() {

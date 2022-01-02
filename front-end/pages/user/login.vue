@@ -56,6 +56,7 @@ export default {
         this.$store.commit('user/login');
         message = 'ログインしました';
         type = 'success';
+        this.$router.push('/user');
       })
       .catch(e => {
         message = e.response.data;

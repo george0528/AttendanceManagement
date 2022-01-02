@@ -30,7 +30,6 @@
         locale="ja-jp"
         :type="type"
         :event-more="more_flag"
-        @click:day="clickDay"
         @click:more="clickMore"
         @click:event="clickEvent"
         :day-format="(timestamp) => new Date(timestamp.date).getDate()"
@@ -75,14 +74,12 @@ export default {
         this.type_num = 1
       }
     },
-    clickDay(day) {
-      // console.log(day);
-    },
     clickMore() {
       this.more_flag = !this.more_flag;
     },
-    clickEvent(event) {
-      
+    clickEvent(data) {
+      let id = data.event.id;
+      this.$emit('clickEvent', data.event);
     },
     emitEvent() {
       this.$emit('btnClickEmit');
