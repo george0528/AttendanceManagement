@@ -308,7 +308,7 @@ class AdminTest extends TestCase
   {
     $this->url .= '/absence';
 
-    Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
+    Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_request')->create();
 
     $res = $this->actingAs($this->admin, 'admin')->get($this->url);
     $res->assertOk();
@@ -321,7 +321,7 @@ class AdminTest extends TestCase
   {
     $this->url .= '/absence';
 
-    $schedule =  Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_requests')->create();
+    $schedule =  Schedule::factory()->has(AbsenceRequest::factory()->count(3), 'absence_request')->create();
     $data = AbsenceRequest::where('schedule_id', $schedule->id)->first();
 
     $res = $this->actingAs($this->admin, 'admin')->putJson($this->url, ['absence_id' => $data->id]);

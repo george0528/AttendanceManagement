@@ -12,9 +12,9 @@ class Schedule extends Model
     protected $guarded = ['id'];
     public $timestamps = false;
 
-    public function absence_requests()
+    public function absence_request()
     {
-        return $this->hasMany(AbsenceRequest::class);
+        return $this->hasOne(AbsenceRequest::class);
     }
 
     public function user()

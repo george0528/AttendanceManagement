@@ -169,7 +169,7 @@ class AdminService extends AuthService
   // スケジュールを取得
   public function getSchedule()
   {
-    $schedules = Schedule::with('user')->get();
+    $schedules = Schedule::with(['user', 'absence_request'])->get();
     return response()->json($schedules, 200);
   }
 
