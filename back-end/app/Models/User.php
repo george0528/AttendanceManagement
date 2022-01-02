@@ -68,7 +68,7 @@ class User extends Authenticatable
   public function getSchedules()
   {
     $id = $this->id;
-    return Schedule::where('user_id', $id)->get();
+    return Schedule::with('absence_request')->where('user_id', $id)->get();
   }
 
   // 就業履歴のhasmany
