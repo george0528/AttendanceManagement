@@ -23,8 +23,24 @@ export default {
         var data = res.data;
         var events = data.map(event => {
           event.name = event.user.name;
-          event.color = 'red';
+          event.color = 'blue';
           event.timed = true;
+          if(event.absence_request == null) {
+            return event;
+          }
+
+          // 欠勤申請済みで未承諾の場合
+          if(event.absence_request.request_check == 0) {
+            event.color = 'grey';
+            event.name = '欠勤申請が未承諾' + ' ' + event.user.name;
+            event.is_absence_requested = true;
+            return event;
+          } 
+
+          // 欠勤申請が承諾されていたら
+          event.color = 'red';
+          event.name = '欠勤申請承諾済み' + ' ' + event.user.name;
+          event.is_absence_requested = true;
           return event;
         });
         this.events = events;
@@ -33,10 +49,6 @@ export default {
         this.$store.dispatch('flashMessage/showErrorMessage', 'スケジュールの取得に失敗しました');
       })
     },
-    clickDay(day) {
-      console.log(day);
-      console.log('aaaaaa');
-    }
   },
   mounted() {
     this.getSchedule();

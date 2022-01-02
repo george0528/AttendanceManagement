@@ -124,7 +124,9 @@ export default {
       this.is_disabled = false;
     },
     openAbsenceForm(event) {
-      this.event = event;
+      if(!event.is_absence_requested) {
+        this.event = event;
+      }
     },
     async addAbsence() {
       this.is_disabled = true;
@@ -134,6 +136,10 @@ export default {
       })
       .then(res => {
         this.$store.dispatch('flashMessage/showSuccessMessage', '欠勤申請に成功しました');
+        const index = this.events.indexOf(this.event);
+        this.events[index].color = 'grey';
+        this.events[index].name = '欠勤申請が未承諾';
+        this.event = null;
       })
       .catch(e => {
         this.$store.dispatch('flashMessage/showErrorMessage', '欠勤申請に失敗しました');

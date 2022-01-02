@@ -69,7 +69,6 @@ export default {
       });
     },
     async deleteItem(item) {
-      const index = this.items.indexOf(item)
       confirm('本当に削除しますか')
 
       let message = '';
@@ -80,6 +79,7 @@ export default {
         }
       })
       .then(res => {
+        const index = this.items.indexOf(item)
         this.items.splice(index, 1);
         message = '削除しました';
         type = 'success';
