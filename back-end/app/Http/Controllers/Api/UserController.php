@@ -104,8 +104,9 @@ class UserController extends Controller
   // 欠勤申請
   public function addAbsence(Request $request)
   {
+    $user_id = Auth::id();
     $val = Validator::make($request->all(), [
-      'schedule_id' => ['required', 'integer', Rule::exists('schedules', 'id')->whereNull('deleted_at')],
+      'schedule_id' => ['required', 'integer', Rule::exists('schedules', 'id')->whereNull('deleted_at')->where('user_id', $user_id), Rule::unique('absence_requests', 'schedule_id')],
       'comment' => ['nullable', 'string'],
     ]);
 

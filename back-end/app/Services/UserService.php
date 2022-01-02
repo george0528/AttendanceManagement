@@ -59,7 +59,6 @@ class UserService extends AuthService
   {
     try {
       $res = AbsenceRequest::create($data);
-      // 通知処理ロジック
       return new JsonResponse($res, 200);
     } catch (\Exception $e) {
       return new JsonResponse($e, 400);
