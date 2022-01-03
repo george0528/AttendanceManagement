@@ -76,7 +76,6 @@ export default {
       this.password = '';
     },
   },
-  layout: 'vutify',
 }
 </script>
 

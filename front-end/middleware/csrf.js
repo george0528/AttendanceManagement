@@ -1,3 +1,5 @@
-export default function({$axios}) {
-  $axios.get('/sanctum/csrf-cookie');
+export default function({$axios, $cookies}) {
+  if(!$cookies.get('XSRF-TOKEN')) {
+    $axios.$get('/sanctum/csrf-cookie')
+  }
 }

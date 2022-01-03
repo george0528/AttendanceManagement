@@ -31,6 +31,7 @@
         :type="type"
         :event-more="more_flag"
         @click:more="clickMore"
+        @click:date="viewDay"
         @click:event="clickEvent"
         :day-format="(timestamp) => new Date(timestamp.date).getDate()"
         :month-format="(timestamp) => (new Date(timestamp.date).getMonth() + 1) + ' /'"
@@ -51,16 +52,7 @@ export default {
   props: ['events', 'btn'],
   methods: {
     getEvents() {
-      // const events = [
-      //   {
-      //     name: '会議',
-      //     start: new Date('2021-12-03T01:00:00'), // 開始時刻
-      //     end: new Date('2021-12-03T02:00:00'), // 終了時刻
-      //     color: 'blue',
-      //     timed: true, // 終日ならfalse
-      //   },
-      // ];
-      // this.events = events;
+
     },
     getEventColor(event) {
       return event.color;
@@ -77,8 +69,11 @@ export default {
     clickMore() {
       this.more_flag = !this.more_flag;
     },
+    viewDay({ date }) {
+      this.value = date;
+      this.type_num = 1;
+    },
     clickEvent(data) {
-      let id = data.event.id;
       this.$emit('clickEvent', data.event);
     },
     emitEvent() {

@@ -79,7 +79,6 @@ export default {
       this.disabled = false;
     },
   },
-  layout: 'vutify',
 }
 </script>
 

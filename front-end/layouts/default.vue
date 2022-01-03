@@ -39,5 +39,13 @@ export default {
   data: () => ({
     drawer: false
   }),
+  methods: {
+    getCsrfToken() {
+      this.$axios.get('/sanctum/csrf-cookie');
+    }
+  },
+  mounted() {
+    this.getCsrfToken();
+  }
 }
 </script>

@@ -49,6 +49,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
+    ['cookie-universal-nuxt', { parseJSON: false }],
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
