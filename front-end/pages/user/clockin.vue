@@ -27,27 +27,14 @@ export default {
   methods: {
     async clockIn() {
       this.disabled = true;
-      let message = '';
-      let type = '';
 
       await this.$axios.post('/api/user/clockin')
       .then(res => {
-        type = 'success';
-        message = `${res.data.start_time}に出勤しました`
+        this.$store.dispatch('flashMessage/showSuccessMessage', `${res.data.start_time}に出勤しました`);
       })
       .catch(e => {
-        type = 'error';
-        message = e.response.data;
+        this.$store.dispatch('flashMessage/showErrorMessage', e.response.data);
       })
-
-      this.$store.dispatch(
-        'flashMessage/showMessage',
-        {
-          type: type,
-          message: message,
-          status: true,
-        }
-      )
 
       this.disabled = false;
     }

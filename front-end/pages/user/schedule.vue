@@ -102,25 +102,16 @@ export default {
         end_time: moment(this.end_time).format('YYYY-MM-DD HH:MM'),
       })
       
-      let message = '';
-      let type = '';
       await this.$axios.post('/api/user/schedule', {
         schedules: this.schedules,
       })
       .then(res => {
-        message = '申請出来ました';
-        type = 'success';
+        this.$store.dispatch('flashMessage/showSuccessMessage', '申請に成功しました');
       })
       .catch(e => {
-        message = '申請に失敗しました';
-        type = 'error';
+        this.$store.dispatch('flashMessage/showErrorMessage', '申請に失敗しました');
       })
 
-      this.$store.dispatch('flashMessage/showMessage', {
-        message: message,
-        type: type,
-        status: true,
-      });
       this.is_disabled = false;
     },
     openAbsenceForm(event) {

@@ -27,27 +27,14 @@ export default {
   methods: {
     async clockOut() {
       this.disabled = true;
-      let message = '';
-      let type = '';
 
       await this.$axios.post('/api/user/clockout')
       .then(res => {
-        type = 'success';
-        message = `${res.data.end_time}に退勤しました`
+        this.$store.dispatch('flashMessage/showSuccessMessage', `${res.data.end_time}に退勤しました`);
       })
       .catch(e => {
-        type = 'error';
-        message = e.response.data;
+        this.$store.dispatch('flashMessage/showErrorMessage', e.response.data);
       })
-
-      this.$store.dispatch(
-        'flashMessage/showMessage',
-        {
-          type: type,
-          message: message,
-          status: true,
-        }
-      )
 
       this.disabled = false
     }

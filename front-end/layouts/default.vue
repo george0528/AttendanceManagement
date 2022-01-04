@@ -45,7 +45,9 @@ export default {
     }
   },
   mounted() {
-    this.getCsrfToken();
+    if (!this.$cookies.get('XSRF-TOKEN') || !this.$cookies.get('backend_cookie')) {
+      this.getCsrfToken();
+    }
   }
 }
 </script>

@@ -44,8 +44,6 @@ export default {
   methods: {
     async userLogin() {
       this.disabled = true;
-      let message = '';
-      let type = '';
 
       // api
       await this.$axios.post('/api/user/login', {
@@ -54,24 +52,12 @@ export default {
       })
       .then(res => {
         this.$store.commit('user/login');
-        message = 'ログインしました';
-        type = 'success';
+        this.$store.dispatch('flashMessage/showSuccessMessage', 'ログインしました');
         this.$router.push('/user');
       })
       .catch(e => {
-        message = e.response.data;
-        type = 'error'; 
+        this.$store.dispatch('flashMessage/showErrorMessage', 'ログインに失敗しました');
       });
-
-      // flashメッセージ
-      this.$store.dispatch(
-        'flashMessage/showMessage',
-        {
-          message: message,
-          type: type,
-          status: true,
-        }
-      );
 
       // inputを空白にする
       this.login_id = '';

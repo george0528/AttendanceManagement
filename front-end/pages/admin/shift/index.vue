@@ -59,11 +59,7 @@ export default {
       })
       .catch(e => {
         console.log(e);
-        this.$store.dispatch('flashMessage/showMessage', {
-          message: 'シフトリクエストの取得に失敗しました',
-          type: 'error',
-          status: true,
-        })
+        this.$store.dispatch('flashMessage/showErrorMessage', 'シフトリクエストの取得に失敗しました');
       })
 
       this.is_load = false;

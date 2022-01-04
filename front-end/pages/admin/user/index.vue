@@ -57,22 +57,13 @@ export default {
         this.is_load = false;
       })
       .catch(e => {
-        this.$store.dispatch(
-          'flashMessage/showMessage',
-          {
-            message: 'データを取得出来ませんでした',
-            type: 'error',
-            status: true,
-          }
-        );
+        this.$store.dispatch('flashMessage/showErrorMessage', 'データを取得出来ませんでした');
         this.is_load = false;
       });
     },
     async deleteItem(item) {
       confirm('本当に削除しますか')
 
-      let message = '';
-      let type = '';
       await this.$axios.delete('/api/admin/user', {
         data: {
           user_id: item.id
@@ -81,19 +72,12 @@ export default {
       .then(res => {
         const index = this.items.indexOf(item)
         this.items.splice(index, 1);
-        message = '削除しました';
-        type = 'success';
+        this.$store.dispatch('flashMessage/showSuccessMessage', '削除しました');
       })
       .catch(e => {
-        message = '削除に失敗しました';
-        type = 'error';
+        this.$store.dispatch('flashMessage/showErrorMessage', '削除に失敗しました');
       })
 
-      this.$store.dispatch('flashMessage/showMessage', {
-        message: message,
-        type: type,
-        status: true,
-      })
     },
   },
   mounted() {

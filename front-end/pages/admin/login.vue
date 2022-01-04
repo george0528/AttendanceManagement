@@ -42,8 +42,6 @@ export default {
   },
   methods: {
     async userLogin() {
-      let message = '';
-      let type = '';
 
       // api
       await this.$axios.post('/api/admin/login', {
@@ -52,24 +50,12 @@ export default {
       })
       .then(res => {
         this.$store.commit('admin/login');
-        message = 'ログインしました';
-        type = 'success';
+        this.$store.dispatch('flashMessage/showSuccessMessage', 'ログインしました');
         this.$router.push('/admin');
       })
       .catch(e => {
-        message = e.response.data;
-        type = 'error'; 
+        this.$store.dispatch('flashMessage/showErrorMessage', e.response.data);
       });
-
-      // flashメッセージ
-      this.$store.dispatch(
-        'flashMessage/showMessage',
-        {
-          message: message,
-          type: type,
-          status: true,
-        }
-      );
 
       // inputを空白にする
       this.email = '';
