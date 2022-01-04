@@ -7,8 +7,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## システム一覧
-[システム一覧](https://docs.google.com/spreadsheets/d/18kgLSxjS5Q0uOkvXB5gVgvJpBGPnTtFdknuTQH0-e4k/edit?usp=sharing)
+## api一覧
+[api一覧のスプレッドシート](https://docs.google.com/spreadsheets/d/18kgLSxjS5Q0uOkvXB5gVgvJpBGPnTtFdknuTQH0-e4k/edit?usp=sharing)
 
 ## About Laravel
 
