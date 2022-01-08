@@ -19,6 +19,9 @@ class CreatePayslipsTable extends Migration
             $table->enum('salary_type', ['hour', 'month']);
             $table->integer('hour_salary');
             $table->integer('month_salary')->nullable();
+            $table->integer('sum_time');
+            $table->integer('midnight_time');
+            $table->integer('attendance_days');
             $table->timestamps();
         });
     }
