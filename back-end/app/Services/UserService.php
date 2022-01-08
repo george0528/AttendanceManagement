@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AbsenceRequest;
 use App\Models\History;
 use App\Models\Now;
+use App\Models\Payslip;
 use App\Models\ShiftRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -113,4 +114,13 @@ class UserService extends AuthService
     }
   }
 
+  // 給与明細を返す
+  public function getPayslip($user_id)
+  {
+    $payslip = Payslip::where('user_id', $user_id)->first();
+    if(empty($payslip)) {
+      return response()->json('最新の給与明細が在りません', 400);
+    }
+    return response()->json($payslip, 200);
+  }
 }

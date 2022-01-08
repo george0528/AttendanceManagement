@@ -148,4 +148,13 @@ class UserController extends Controller
 
     return response()->json('まだ出勤していません', 400);
   }
+
+  // 給与明細を取得
+  public function getPayslip()
+  {
+    $user = Auth::user();
+    $id = $user->id;
+    
+    return $this->service->getPayslip($id);
+  }
 }

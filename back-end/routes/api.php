@@ -50,6 +50,7 @@ Route::prefix('/user')->group(function () {
     Route::post('/absence', [UserController::class, 'addAbsence']);
     Route::post('/clockin', [UserController::class, 'clockIn']);
     Route::post('/clockout', [UserController::class, 'clockOut']);
+    Route::get('/payslip', [UserController::class, 'getPayslip']);
   });
 });
 
