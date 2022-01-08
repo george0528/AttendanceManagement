@@ -84,6 +84,22 @@ class User extends Authenticatable
     return History::where('user_id', $id)->get();
   }
 
+  // 給料のhasmany
+  public function salaries()
+  {
+    return $this->hasMany(Salary::class);
+  }
+
+  // 給料が設定されているか
+  public function is_set_salary()
+  {
+    $id = $this->id;
+    $res = Salary::where('user_id', $id)->first();
+    if (isset($res)) {
+      return true;
+    }
+    return false;
+  }
   // 現在出勤しているか
   public function is_attendance()
   {
