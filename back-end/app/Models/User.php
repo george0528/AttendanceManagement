@@ -84,10 +84,10 @@ class User extends Authenticatable
     return History::where('user_id', $id)->get();
   }
 
-  // 給料のhasmany
+  // 給料のhasone
   public function salaries()
   {
-    return $this->hasMany(Salary::class);
+    return $this->hasOne(Salary::class);
   }
 
   // 給料が設定されているか
