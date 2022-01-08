@@ -85,7 +85,7 @@ class User extends Authenticatable
   }
 
   // 給料のhasone
-  public function salaries()
+  public function salary()
   {
     return $this->hasOne(Salary::class);
   }
@@ -94,6 +94,7 @@ class User extends Authenticatable
   public function is_set_salary()
   {
     $id = $this->id;
+    User::find(1);
     $res = Salary::where('user_id', $id)->first();
     if (isset($res)) {
       return true;

@@ -15,7 +15,7 @@ class CreatePayslipsTable extends Migration
     {
         Schema::create('payslips', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->bigInteger('user_id')->unsigned();
             $table->enum('salary_type', ['hour', 'month']);
             $table->integer('hour_salary');
             $table->integer('month_salary')->nullable();
@@ -23,6 +23,9 @@ class CreatePayslipsTable extends Migration
             $table->integer('midnight_time');
             $table->integer('attendance_days');
             $table->timestamps();
+            $table->softDeletes();
+            // 外部キー
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

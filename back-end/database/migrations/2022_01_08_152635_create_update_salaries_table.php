@@ -15,12 +15,15 @@ class CreateUpdateSalariesTable extends Migration
     {
         Schema::create('update_salaries', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->bigInteger('user_id')->unsigned();
             $table->enum('salary_type', ['hour', 'month']);
             $table->integer('hour_salary');
             $table->integer('month_salary')->nullable();
             $table->dateTime('applying_datetime');
+            $table->softDeletes();
             $table->timestamps();
+            // 外部キー
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
