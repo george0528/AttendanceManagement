@@ -151,20 +151,21 @@ class AdminController extends Controller
 	public function addSalary(Request $request)
 	{
 		$val = Validator::make($request->all(), [
-			'user_id' => ['required', Rule::exists('users', 'id')->whereNotNull('deleted_at')],
+			'user_id' => ['required', Rule::exists('users', 'id')->whereNull('deleted_at')],
 			'salary_type' => ['required', new AnyOneMatch(['hour', 'month'])],
-			'hour_salary' => ['required', 'number'],
-			'month_salary' => ['number', 'nullable'],
+			'hour_salary' => ['required', 'numeric'],
+			'month_salary' => ['numeric', 'nullable'],
 		]);
 
 		if($val->fails()) {
-			return response()->json('給与の設定に失敗しました', 400);
+			info($val->errors());
+			return response()->json('給与の設定に失敗しました1', 400);
 		}
 
 		if($request->get('salary_type') == 'month_salary') {
 			$month_salary = $request->get('month_salary');
 			if (empty($month_salary)) {
-				return response()->json('給与の設定に失敗しました', 400);
+				return response()->json('給与の設定に失敗しました2', 400);
 			}
 		}
 
