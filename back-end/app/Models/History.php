@@ -19,9 +19,11 @@ class History extends Model
     $sum_times = 0;
     $midnight_times = 0;
 
-    foreach ($histories as $history) {
-      $sum_times += $history->sumTime();
-      $midnight_times += $history->midnightTime();
+    if(isset($histories)) {
+      foreach ($histories as $history) {
+        $sum_times += $history->sumTime();
+        $midnight_times += $history->midnightTime();
+      }
     }
 
     $data = [

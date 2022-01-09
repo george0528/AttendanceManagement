@@ -55,7 +55,7 @@ class CreatePayslip extends Command
 
         $payslip_create_data['user_id'] = $user->id;
         $payslip_create_data['attendance_days'] = count($user->histories);
-        $time_data = History::getTimes($user->histoies);
+        $time_data = History::getTimes($user->histories);
         $payslip_create_data['sum_time'] = $time_data['sum_times'];
         $payslip_create_data['midnight_time'] = $time_data['midnight_times'];
         $salary_data = $user->salary;
