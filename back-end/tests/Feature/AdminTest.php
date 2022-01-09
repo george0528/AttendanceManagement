@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\AbsenceRequest;
 use App\Models\Admin;
 use App\Models\History;
+use App\Models\Salary;
 use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
@@ -192,6 +193,29 @@ class AdminTest extends TestCase
     $res->assertOk();
 
     $this->assertEquals(User::count(), $user_count);
+  }
+
+  // 給料の設定を追加
+  public function test_user_salary_add()
+  {
+    $this->url .= '/user/salary';
+
+    $user = User::factory()->create();
+    $salary_count = Salary::count();
+    $salary_count++;
+    
+    $data = [
+      'user_id' => $user->id,
+      'salary_type' => 'hour',
+      'hour_salary' => 1500
+    ];
+    $res = $this->actingAs($this->admin, 'admin')->postJson($this->url, $data);
+    $json = $res->json();
+
+    info($json);
+    $res->assertOk();
+
+    $this->assertEquals(Salary::count(), $salary_count);
   }
 
   // 論理削除のuserを取得
