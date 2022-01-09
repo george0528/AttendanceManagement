@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\ShiftRequest::factory(3)->create();
         \App\Models\ShiftRequestDate::factory(3)->create();
         \App\Models\AbsenceRequest::factory(3)->create();
+        \App\Models\Salary::factory(1)->create();
     }
 }
