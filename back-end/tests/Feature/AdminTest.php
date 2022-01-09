@@ -133,7 +133,8 @@ class AdminTest extends TestCase
     $res = $this->actingAs($this->admin, 'admin')->getJson($this->url);
     $res->assertOk();
     
-    $json = $res->decodeResponseJson();
+    $json = $res->json();
+    $this->assertTrue(array_key_exists('salary', $json[0]));
     $this->assertEquals($user_count, count($json));
   }
 
