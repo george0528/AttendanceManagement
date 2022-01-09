@@ -210,9 +210,6 @@ class AdminTest extends TestCase
       'hour_salary' => 1500
     ];
     $res = $this->actingAs($this->admin, 'admin')->postJson($this->url, $data);
-    $json = $res->json();
-
-    info($json);
     $res->assertOk();
 
     $this->assertEquals(Salary::count(), $salary_count);

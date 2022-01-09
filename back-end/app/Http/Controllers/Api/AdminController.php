@@ -158,7 +158,6 @@ class AdminController extends Controller
 		]);
 
 		if($val->fails()) {
-			info($val->errors());
 			return response()->json('給与の設定に失敗しました1', 400);
 		}
 

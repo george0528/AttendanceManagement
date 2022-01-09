@@ -158,7 +158,7 @@ class AdminService extends AuthService
       $salary = Salary::where('user_id', $data['user_id'])->first();
       if (isset($salary)) {
         $delete_res = $salary->delete();
-        if($delete_res) {
+        if(empty($delete_res)) {
           throw new Exception("userのすでに設定済みの給与設定の削除に失敗しました");
         }
       }
@@ -166,12 +166,12 @@ class AdminService extends AuthService
       if(empty($create_res)) {
         throw new Exception("userの給与設定の作成に失敗しました");
       }
-      return response()->json('給与設定を追加しました', 200);
       DB::commit();
+      return response()->json('給与設定を追加しました', 200);
     } catch (\Exception $e) {
       DB::rollBack();
-      return response()->json('給与設定の追加に失敗しました', 400);
       logger()->error($e);
+      return response()->json('給与設定の追加に失敗しました', 400);
     }
   }
   // シフトリクエストを取得
