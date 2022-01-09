@@ -58,7 +58,7 @@ class AdminService extends AuthService
   // user取得
   public function getUser()
   {
-    $users = User::all();
+    $users = User::with('salary')->get();
     return response()->json($users, 200);
   }
 
