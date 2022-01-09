@@ -140,6 +140,12 @@ class AdminController extends Controller
 		return $this->service->forceDeleteUser($val->validated()['user_id']);
 	}
 
+	// userの給料を取得
+	public function getSalary()
+	{
+		return $this->service->getSalary();
+	}
+
 	// シフトリクエストを取得
 	public function getShift()
 	{

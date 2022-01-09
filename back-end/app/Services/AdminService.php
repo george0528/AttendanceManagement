@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\AbsenceRequest;
 use App\Models\History;
+use App\Models\Salary;
 use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
@@ -136,6 +137,16 @@ class AdminService extends AuthService
     } catch (\Exception $e) {
       return response()->json($e, 400);
     }
+  }
+
+  // userの給与を取得
+  public function getSalary()
+  {
+    $salaries = Salary::all();
+    if(empty($salaries)) {
+      return response()->json('給料の設定がありません', 400);
+    }
+    return response()->json($salaries, 200);
   }
 
   // シフトリクエストを取得

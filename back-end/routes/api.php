@@ -67,6 +67,7 @@ Route::prefix('/admin')->group(function() {
       Route::post('/', [AdminController::class, 'addUser']);
       Route::put('/', [AdminController::class, 'updateUser']);
       Route::delete('/', [AdminController::class, 'deleteUser']);
+      Route::get('/salary', [AdminController::class, 'getSalary']);
       Route::get('/delete', [AdminController::class, 'getDeleteUser']);
       Route::post('/delete', [AdminController::class, 'deleteUser']);
       Route::put('/delete', [AdminController::class, 'restoreDeleteUser']);
