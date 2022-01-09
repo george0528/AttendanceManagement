@@ -80,7 +80,7 @@ export default {
         const index = this.delete_users.indexOf(user);
         this.delete_users.splice(index, 1);
       })
-      .catch(e => {
+      .catch(e => {x
         console.log(e);
         this.$store.dispatch('flashMessage/showErrorMessage', 'ユーザーの復元に失敗しました');
       })

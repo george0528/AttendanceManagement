@@ -19,7 +19,7 @@
       </template>
       <template v-slot:[`item.salary`]="{ item }">
         <v-btn v-if="item.salary == null" small color="error" @click="openDialog(item)">給与未設定</v-btn>
-        <v-btn v-if="item.salary != null" small color="info">給与設定済み</v-btn>
+        <v-btn v-if="item.salary != null" small color="info" @click="openDialog(item)">給与設定済み</v-btn>
       </template>
     </v-data-table>
       <!-- ダイアログ -->
@@ -148,8 +148,15 @@ export default {
         this.form_data.month_salary = item.salary.month_salary;
       }
     },
-    addSalary() {
-      console.log(this.form_data);
+    async addSalary() {
+      await this.$axios.post('/api/admin/user/salary', this.form_data)
+      .then(res => {
+        this.$store.dispatch('flashMessage/showSuccessMessage', '給料の設定に成功しました');
+        this.getUser();
+      })
+      .catch(e => {
+        this.$store.dispatch('flashMessage/showErrorMessage', '給料の設定に失敗しました');
+      })
     }
   },
   mounted() {
