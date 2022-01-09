@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ShiftRequest;
+use App\Rules\AnyOneMatch;
 use Illuminate\Http\Request;
 use App\Services\AdminService;
 use App\Services\AuthService;
@@ -144,6 +145,30 @@ class AdminController extends Controller
 	public function getSalary()
 	{
 		return $this->service->getSalary();
+	}
+
+	// userの給料設定を追加
+	public function addSalary(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'user_id' => ['required', Rule::exists('users', 'id')->whereNotNull('deleted_at')],
+			'salary_type' => ['required', new AnyOneMatch(['hour', 'month'])],
+			'hour_salary' => ['required', 'number'],
+			'month_salary' => ['number', 'nullable'],
+		]);
+
+		if($val->fails()) {
+			return response()->json('給与の設定に失敗しました', 400);
+		}
+
+		if($request->get('salary_type') == 'month_salary') {
+			$month_salary = $request->get('month_salary');
+			if (empty($month_salary)) {
+				return response()->json('給与の設定に失敗しました', 400);
+			}
+		}
+
+		return $this->service->addSalary($val->validated());
 	}
 
 	// シフトリクエストを取得

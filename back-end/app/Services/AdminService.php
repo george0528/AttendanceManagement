@@ -9,6 +9,7 @@ use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -149,6 +150,30 @@ class AdminService extends AuthService
     return response()->json($salaries, 200);
   }
 
+  // userの給与設定を追加
+  public function addSalary($data)
+  {
+    DB::beginTransaction();
+    try {
+      $salary = Salary::where('user_id', $data['user_id'])->first();
+      if (isset($salary)) {
+        $delete_res = $salary->delete();
+        if($delete_res) {
+          throw new Exception("userのすでに設定済みの給与設定の削除に失敗しました");
+        }
+      }
+      $create_res = Salary::create($data);
+      if(empty($create_res)) {
+        throw new Exception("userの給与設定の作成に失敗しました");
+      }
+      return response()->json('給与設定を追加しました', 200);
+      DB::commit();
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return response()->json('給与設定の追加に失敗しました', 400);
+      logger()->error($e);
+    }
+  }
   // シフトリクエストを取得
   public function getShift()
   {
