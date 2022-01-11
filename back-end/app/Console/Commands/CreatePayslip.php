@@ -43,6 +43,13 @@ class CreatePayslip extends Command
   public function handle()
   {
     $users = User::with(['histories', 'salary'])->get();
+    $now = Carbon::now();
+    $salary_end_date = $now;
+    // 25日締め日なら$salary_end_dateは26日にする
+    $users = User::with(['salary'])->whereHas('histories', function($q) use($salary_end_date) {
+      $salary_begin_date = $salary_end_date->subMonth();
+      $q->where($salary_begin_date, '<', 'start_time')->where('start_time', '<', $salary_end_date);
+    })->get();
     DB::beginTransaction();
     try {
       $create_datas = [];
