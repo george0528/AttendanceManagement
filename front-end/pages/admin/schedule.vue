@@ -104,9 +104,6 @@ export default {
       this.dialog = false;
       this.is_disabled = false;
     },
-    hello() {
-      console.log('hello');
-    }
   },
   mounted() {
     this.getSchedule();
