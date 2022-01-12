@@ -7,7 +7,7 @@
      <v-btn outlined small class="ma-4" @click="changeShowType">
        表示変更
      </v-btn>
-     <v-btn v-if="btn.flag" color="info" outlined small class="ma-4" @click="emitEvent">
+     <v-btn v-if="btn.flag" color="info" outlined small class="ma-4" @click="btnClickEmit">
       {{ btn.text }}
      </v-btn>
       <v-btn icon @click="$refs.calendar.prev()">
@@ -46,7 +46,7 @@ import moment from 'moment';
 export default {
   data: () => ({
     value: moment().format('yyyy-MM-DD'),  // 現在日時
-    type_num: 1,
+    type_num: 3,
     more_flag: true,
   }),
   props: ['events', 'btn'],
@@ -76,7 +76,7 @@ export default {
     clickEvent(data) {
       this.$emit('clickEvent', data.event);
     },
-    emitEvent() {
+    btnClickEmit() {
       this.$emit('btnClickEmit');
     }
   },
