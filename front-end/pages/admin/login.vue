@@ -16,7 +16,7 @@
             name="password"
             label="password"
             v-model="password"
-            v-bind:type="showPassword ? 'text' : 'password'"
+            :type="showPassword ? 'text' : 'password'"
             prepend-icon="mdi-lock" 
             append-icon="mdi-eye-off" 
             @click:append="showPassword = !showPassword"
