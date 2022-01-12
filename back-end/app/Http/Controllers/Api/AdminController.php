@@ -228,4 +228,10 @@ class AdminController extends Controller
 	{
 		return $this->service->getHistory();
 	}
+
+	// 設定の確認
+	public function getOption()
+	{
+		return $this->service->getOption();
+	}
 }

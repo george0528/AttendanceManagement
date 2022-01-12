@@ -81,6 +81,7 @@ Route::prefix('/admin')->group(function() {
     Route::get('/absence', [AdminController::class, 'getAbsence']);
     Route::put('/absence', [AdminController::class, 'putAbsence']);
     Route::get('/history', [AdminController::class, 'getHistory']);
+    Route::get('/option', [AdminController::class, 'getOption']);
   });
 });
 

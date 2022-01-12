@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Models\AbsenceRequest;
 use App\Models\History;
+use App\Models\Option;
 use App\Models\Salary;
 use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\ShiftRequestDate;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -260,5 +262,12 @@ class AdminService extends AuthService
   {
     $histories = History::all();
     return response()->json($histories, 200);
+  }
+
+  // 設定の取得
+  public function getOption()
+  {
+    $option = Option::first();
+    return response()->json($option, 200);
   }
 }
