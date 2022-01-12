@@ -14,16 +14,24 @@ class ScheduleFactory extends Factory
      */
     public function definition()
     {
-        return [
+        $data = [
             'user_id' => User::first()->id,
-            'start_time' => $this->generateDate(),
-            'end_time' => $this->generateDate(),
+            'start_time' => $this->generateStartDate(),
         ];
+        $data['end_time'] = $this->generateEndDate($data['start_time']);
+        
+        return $data;
     }
 
-    public function generateDate()
+    public function generateStartDate()
     {
         return $this->faker->dateTimeBetween('now', '+2 week')->format('Y-m-d H:i:s');
     }
     
+    public function generateEndDate($start_time)
+    {
+        $end_time = new Carbon($start_time);
+        $end_time->addHour();
+        return $end_time->__toString();
+    }
 }

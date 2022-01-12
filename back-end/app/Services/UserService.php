@@ -117,10 +117,7 @@ class UserService extends AuthService
   // 給与明細を返す
   public function getPayslip($user_id)
   {
-    $payslip = Payslip::where('user_id', $user_id)->first();
-    if(empty($payslip)) {
-      return response()->json('最新の給与明細が在りません', 400);
-    }
+    $payslip = Payslip::where('user_id', $user_id)->get();
     return response()->json($payslip, 200);
   }
 }
