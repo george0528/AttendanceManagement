@@ -17,8 +17,8 @@ class CreateOptionsTable extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id();
             // $table->bigInteger('user_id')->unsigned();
-            $table->boolean('create_payslip')->default(true);
-            $table->integer('create_payslip_day')->default('25');
+            $table->boolean('create_payslip')->default(false);
+            $table->integer('salary_closing_day')->default('25');
             $table->softDeletes();
             $table->timestamps();
 
