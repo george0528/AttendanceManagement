@@ -10,6 +10,7 @@
         <v-btn color="success" to="/admin/user">ユーザー管理</v-btn>
         <v-btn color="success" to="/admin/shift">シフト申請の管理</v-btn>
         <v-btn color="success" to="/admin/absence">欠勤申請の管理</v-btn>
+        <v-btn color="success" to="/admin/option">設定</v-btn>
         <v-btn color="error" @click="linkBack">戻る</v-btn>
       </v-card-actions>
     </v-card>
