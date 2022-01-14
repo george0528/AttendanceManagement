@@ -11,6 +11,7 @@ use App\Services\AuthService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use SebastianBergmann\Environment\Console;
 
 class AdminController extends Controller
 {
@@ -60,7 +61,7 @@ class AdminController extends Controller
 		$val = Validator::make($request->all(),[
 			'name' => ['required', 'string'],
 			'age' => ['required', 'integer'],
-			'password' => ['between:6, 12'],
+			'password' => ['requreid', 'between:6, 12'],
 		]);
 
 		if($val->fails()) {
@@ -238,14 +239,16 @@ class AdminController extends Controller
 	// 設定を編集
 	public function putOption(Request $request)
 	{
+		info($request->all());
 		$val = Validator::make($request->all(), [
-			'create_payslip' => ['boolean'],
-			'salary_closing_day' => ['integer', 'between|1,28'],
+			'create_payslip' => ['required', 'boolean'],
+			'salary_closing_day' => ['required', 'integer', 'between:1,28'],
 		]);
 
 		if ($val->fails()) {
 			return response()->json('設定の編集に失敗しました', 400);
 		}
+		info($val->validated());
 
 		return $this->service->putOption($val->validated());
 	}

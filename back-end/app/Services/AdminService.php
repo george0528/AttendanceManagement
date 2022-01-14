@@ -274,8 +274,15 @@ class AdminService extends AuthService
   // 設定の編集
   public function putOption($data)
   {
-    $option = Option::firstOrCreate();
-    $option->fill($data);
-    $option->save();
+    try {
+      $option = Option::firstOrCreate();
+      $option->fill($data);
+      $res = $option->save();
+      if($res != 1) {
+        throw new Exception("変更されたレコードの数が${res}です");
+      }
+    } catch (\Exception $e) {
+      logger()->error($e);
+    }
   }
 }
