@@ -267,7 +267,15 @@ class AdminService extends AuthService
   // 設定の取得
   public function getOption()
   {
-    $option = Option::first();
+    $option = Option::firstOrCreate();
     return response()->json($option, 200);
+  }
+
+  // 設定の編集
+  public function putOption($data)
+  {
+    $option = Option::firstOrCreate();
+    $option->fill($data);
+    $option->save();
   }
 }

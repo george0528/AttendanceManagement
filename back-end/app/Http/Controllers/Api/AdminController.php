@@ -234,4 +234,19 @@ class AdminController extends Controller
 	{
 		return $this->service->getOption();
 	}
+
+	// 設定を編集
+	public function putOption(Request $request)
+	{
+		$val = Validator::make($request->all(), [
+			'create_payslip' => ['boolean'],
+			'salary_closing_day' => ['integer', 'between|1,28'],
+		]);
+
+		if ($val->fails()) {
+			return response()->json('設定の編集に失敗しました', 400);
+		}
+
+		return $this->service->putOption($val->validated());
+	}
 }
