@@ -28,6 +28,6 @@ class HistoryFactory extends Factory
 
     public function generateDate()
     {
-        return $this->faker->dateTimeBetween('now', '+2 week');
+        return $this->faker->dateTimeBetween('-2 week', 'now');
     }
 }

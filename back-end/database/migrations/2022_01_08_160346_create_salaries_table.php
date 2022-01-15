@@ -16,8 +16,8 @@ class CreateSalariesTable extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->enum('salary_type', ['hour', 'month']);
-            $table->integer('hour_salary');
+            $table->enum('salary_type', ['hour', 'month'])->default('hour');
+            $table->integer('hour_salary')->default(1000);
             $table->integer('month_salary')->nullable();
             $table->softDeletes();
             $table->timestamps();
