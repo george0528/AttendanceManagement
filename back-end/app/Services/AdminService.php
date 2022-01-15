@@ -68,15 +68,19 @@ class AdminService extends AuthService
   // user追加
   public function addUser($data)
   {
+    DB::beginTransaction();
     try {
       $user = new User;
       $login_id = $user->loginIdGenerate();
       $data['login_id'] = $login_id;
       $data['password'] = Hash::make($data['password']);
       $data['remember_token'] = Str::random(10);
-      User::create($data);
+      $user = User::create($data);
+      Salary::create(['user_id' => $user->id]);
+      DB::commit();
       return response()->json($data, 200);
     } catch (\Exception $e) {
+      DB::rollBack();
       return response()->json($e, 400);
     }
   }
