@@ -47,10 +47,11 @@ class CreatePayslip extends Command
    */
   public function handle()
   {
-    $option = Option::first();
+    $option = Option::firstOrcreate();
     $now = Carbon::now();
+    $users = User::with(['salary'])->get();
     // 締め日の二日後に作成
-    $payslip_create_day = $option->salary_cloging_day + $this->payslip_create_salary_closing_any_ago_day;
+    $payslip_create_day = $option->salary_closing_day + $this->payslip_create_salary_closing_any_ago_day;
     $year = $now->year;
 
     // 月をまたいでいる可能性があるため
@@ -61,10 +62,6 @@ class CreatePayslip extends Command
     $day = $option->salary_closing_day;
     $salary_end_date = Carbon::createMidnightDate($year, $month, $day);
     
-    if(empty($option)) {
-      throw new Exception("設定のレコードがありません");
-    }
-    
     if(!$option->create_payslip) {
       throw new Exception("給与設定の自動作成が許可されていません");
     }
@@ -72,13 +69,6 @@ class CreatePayslip extends Command
     if($payslip_create_day != $now->day) {
       throw new Exception($now.":給与明細を作成する日ではありません");
     }
-    
-    // 25日締め日なら$salary_end_dateは26日にする
-    $users = User::with(['salary'])->whereHas('histories', function($q) use($salary_end_date) {
-      $salary_first_date = $salary_end_date->subMonth();
-      $salary_end_date->addDay();
-      $q->where($salary_first_date, '=<', 'start_time')->where('start_time', '<', $salary_end_date);
-    })->get();
     DB::beginTransaction();
     try {
       $create_datas = [];
@@ -88,8 +78,15 @@ class CreatePayslip extends Command
         }
         // データを初期化
         $payslip_create_data = [];
-
+        
         $payslip_create_data['user_id'] = $user->id;
+        
+        // 25日締め日なら$salary_end_dateは26日0時0分にする
+        $salary_first_date = clone $salary_end_date;
+        $salary_first_date->subMonth();
+        $salary_end_date->addDay();
+        // 就業履歴確認
+        $user->histories = History::where('user_id', $user->id)->where('start_time', '>=', $salary_first_date)->where('start_time', '<', $salary_end_date)->get();
         $payslip_create_data['attendance_days'] = count($user->histories);
         $time_data = History::getTimes($user->histories);
         $payslip_create_data['sum_time'] = $time_data['sum_times'];
