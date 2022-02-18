@@ -15,6 +15,7 @@ export default {
       }
     }
   },
+  middleware: 'user_auth',
   methods: {
     async getHistory() {
       this.events = await this.$getDates(this, '/api/user/history', 'red', '就業履歴の取得に失敗しました');

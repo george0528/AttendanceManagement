@@ -85,6 +85,7 @@ export default {
       is_disabled: false,
     }
   },
+  middleware: 'user_auth',
   methods: {
     async getSchedule() {
       this.is_disabled = true;

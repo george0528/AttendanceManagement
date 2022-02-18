@@ -30,6 +30,7 @@ export default {
       ]
     }
   },
+  middleware: 'user_auth',
   methods: {
     async getHistoryTime() {
       this.is_load = true;
