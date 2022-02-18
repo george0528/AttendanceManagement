@@ -15,6 +15,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class AdminTest extends TestCase
@@ -154,6 +155,9 @@ class AdminTest extends TestCase
     ];
     $res = $this->actingAs($this->admin, 'admin')->postJson($this->url, $data);
     $res->assertOk();
+    $res->assertJson(fn (AssertableJson $json) =>
+      $json->has('login_id')
+    );
     $this->assertEquals(User::count(), $user_count);
   }
 

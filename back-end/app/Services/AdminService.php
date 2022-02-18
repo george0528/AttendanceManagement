@@ -78,7 +78,7 @@ class AdminService extends AuthService
       $user = User::create($data);
       Salary::create(['user_id' => $user->id]);
       DB::commit();
-      return response()->json($data, 200);
+      return response()->json(['login_id' => $data['login_id']], 200);
     } catch (\Exception $e) {
       DB::rollBack();
       return response()->json($e, 400);

@@ -141,6 +141,10 @@ export default {
           value: 'id',
         },
         {
+          text: 'ログインID',
+          value: 'login_id',
+        },
+        {
           text: '名前',
           value: 'name',
         },
