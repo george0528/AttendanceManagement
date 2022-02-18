@@ -61,7 +61,7 @@ class AdminController extends Controller
 		$val = Validator::make($request->all(),[
 			'name' => ['required', 'string'],
 			'age' => ['required', 'integer'],
-			'password' => ['requreid', 'between:6, 12'],
+			'password' => ['required', 'between:6, 12'],
 		]);
 
 		if($val->fails()) {
