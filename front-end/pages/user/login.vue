@@ -51,7 +51,8 @@ export default {
         password: this.password,
       })
       .then(res => {
-        this.$store.commit('user/login');
+        const name = res.data.name;
+        this.$store.dispatch('user/login', name);
         this.$store.dispatch('flashMessage/showSuccessMessage', 'ログインしました');
         this.$router.push('/user');
       })

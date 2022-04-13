@@ -12,9 +12,18 @@ export const mutations = {
   logout(state) {
     state.is_login = false;
   },
+  setName(state, name) {
+    state.name = name;
+  }
 }
 
 // actions
+export const actions = {
+  login({commit}, name) {
+    commit('login');
+    commit('setName', name);
+  }
+}
 
 // getters
 export const getters = {
