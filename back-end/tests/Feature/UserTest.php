@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\AbsenceRequest;
 use App\Models\History;
 use App\Models\Now;
+use App\Models\Payslip;
 use App\Models\Schedule;
 use App\Models\ShiftRequest;
 use App\Models\User;
@@ -326,5 +327,21 @@ class UserTest extends TestCase
       'end_time' =>  $end_time->__toString(),
     ];
     return $schedule_data;
+  }
+
+  // 給与明細取得
+  public function test_get_payslip_success()
+  {
+    $this->url .= '/payslip';
+
+    $payslips = Payslip::where('user_id', $this->user->id)->get();
+
+    $res = $this->actingAs($this->user, 'user')->getJson($this->url);
+
+    $res->assertOk();
+
+    $json = $res->json();
+    info($payslips);
+    $this->assertEquals($payslips, $json);
   }
 }

@@ -112,4 +112,11 @@ class CreatePayslip extends Command
     }
     return Command::SUCCESS;
   }
+  
+  /** 
+   * 就業履歴を取得する
+   * @param date $salary_first_date
+   * @param date $salary_end_date
+   * @param User $user
+   */
 }
