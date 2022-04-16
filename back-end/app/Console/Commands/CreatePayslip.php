@@ -86,7 +86,7 @@ class CreatePayslip extends Command
         $salary_first_date->subMonth();
         $salary_end_date->addDay();
         // 就業履歴確認
-        $user->histories = History::where('user_id', $user->id)->where('start_time', '>=', $salary_first_date)->where('start_time', '<', $salary_end_date)->get();
+        $user->histories = getHistories($salary_first_date, $salary_end_date, $user->id);
         $payslip_create_data['attendance_days'] = count($user->histories);
         $time_data = History::getTimes($user->histories);
         $payslip_create_data['sum_time'] = $time_data['sum_times'];
@@ -117,6 +117,13 @@ class CreatePayslip extends Command
    * 就業履歴を取得する
    * @param date $salary_first_date
    * @param date $salary_end_date
-   * @param User $user
+   * @param int $user_id
+   * 
+   * @return array $histories
    */
+  public function getHistories($salary_first_date, $salary_end_date, $user_id)
+  {
+    return History::where('user_id', $user_id)->where('start_time', '>=', $salary_first_date)->where('start_time', '<', $salary_end_date)->get();
+  }
+
 }
